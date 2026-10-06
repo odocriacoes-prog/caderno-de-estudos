@@ -317,7 +317,11 @@ document.addEventListener("submit",async e=>{
  if(e.target.id!=="f-login")return;
  const email=document.getElementById("lg-email").value.trim();
  const {error}=await sb.auth.signInWithOtp({email,options:{shouldCreateUser:false,emailRedirectTo:location.origin+location.pathname}});
- telaLogin(error?"Esse e-mail não tem acesso ao Caderno.":"Link enviado para "+email+". Abra o e-mail neste aparelho e toque no link.");
+ let msg="Link enviado para "+email+". Abra o e-mail neste aparelho e toque no link.";
+ if(error){const m=(error.message||"").toLowerCase();
+  msg=(m.includes("signup")||m.includes("not found")||m.includes("not allowed"))?"Esse e-mail ainda não tem usuário no Supabase. Crie o usuário em Authentication › Users e tente de novo.":
+   (m.includes("rate")||m.includes("security purposes"))?"Muitos pedidos seguidos. Espere um minuto e tente de novo.":"Não consegui mandar o link. O Supabase respondeu: "+error.message;}
+ telaLogin(msg);
 });
 document.getElementById("sair").addEventListener("click",async()=>{await sb.auth.signOut()});
 async function iniciar(){
