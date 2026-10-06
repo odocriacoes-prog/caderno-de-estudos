@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Caderno de Estudos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&family=Hanken+Grotesk:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Martian+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body class="deslogado">
+<div class="app">
+  <aside class="side">
+    <div class="marca"><span class="selo" aria-hidden="true">✱</span><b>Caderno<br>de Estudos</b></div>
+    <div class="navs" style="display:flex;flex-direction:column;gap:18px">
+      <nav class="nav" aria-label="Estudo">
+        <span class="label">Estudo</span>
+        <button data-go="painel">Painel</button>
+        <button data-go="biblioteca">Biblioteca</button>
+        <button data-go="ferramentas">Estante de ferramentas</button>
+        <button data-go="pendencias">Pendências <span class="n" id="n-pend"></span></button>
+      </nav>
+      <nav class="nav" aria-label="Meu Perfil">
+        <span class="label">Meu Perfil</span>
+        <button class="perfil" data-go="estrategia">Estratégia</button>
+        <button class="perfil" data-go="esteira">Esteira <span class="n" id="n-esteira"></span></button>
+        <button class="perfil" data-go="analise">Análise</button>
+      </nav>
+    </div>
+    <div class="sessao"><span id="quem"></span><button id="sair" type="button">Sair</button></div>
+  </aside>
+  <main id="main"></main>
+</div>
+<div class="toast" id="toast" hidden></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="config.js"></script>
+<script src="conteudo.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
