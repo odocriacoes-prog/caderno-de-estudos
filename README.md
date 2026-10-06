@@ -1,6 +1,6 @@
 # Caderno de Estudos
 
-Sistema pessoal de gestão do aprendizado da Lidi: aulas (Bootcamp de Estratégia, Miami Ad School), estante de ferramentas, pendências e a área Meu Perfil (estratégia, esteira de produção e análise de conteúdo).
+Sistema pessoal de gestão do aprendizado da Lidi: aulas (Bootcamp de Estratégia, Miami Ad School; workshop Branding com Conteúdo, Alana Miranda), estante de ferramentas, pendências e a área Meu Perfil (estratégia, esteira de produção e análise de conteúdo).
 
 Site estático (HTML, CSS e JS, sem build) publicado no Netlify, com dados no Supabase do projeto da ÔDO.
 

@@ -212,3 +212,19 @@ body.deslogado .app{grid-template-columns:1fr}
 .sessao{display:flex;flex-direction:column;gap:6px;font-size:12.5px;color:var(--suave);margin-top:auto;border-top:1px dashed var(--linha);padding-top:14px;overflow-wrap:anywhere}
 .sessao button{all:unset;cursor:pointer;color:var(--terre);font-weight:600}
 @media (max-width:860px){.sessao{display:none}}
+
+/* carrossel magnético */
+.checklista{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.checklista li{display:grid;grid-template-columns:40px 1fr;gap:10px;padding:10px 0;border-bottom:1px solid var(--linha);font-size:15.5px}
+.checklista li:last-child{border-bottom:0}
+.checklista .nn{font-family:var(--mono);font-size:13px;color:var(--terre);padding-top:2px}
+pre.prompt{white-space:pre-wrap;font-family:var(--mono);font-size:12px;line-height:1.6;background:var(--leite);border:1px solid var(--linha);border-radius:10px;padding:12px 14px;margin:0;max-height:360px;overflow:auto}
+.card .bloco{display:grid;gap:8px;border-top:1px dashed var(--linha);padding-top:10px}
+.card .capa{font-family:var(--display);font-size:16px;line-height:1.25;color:var(--terre)}
+.hl{display:grid;grid-template-columns:auto 1fr auto;gap:6px;align-items:center;font-size:13.5px;line-height:1.35;padding:4px 6px;border-radius:8px}
+.hl.on{background:var(--miel-fundo)}
+.estrela{all:unset;cursor:pointer;width:22px;height:22px;display:grid;place-items:center;border-radius:6px;color:var(--linha);font-weight:700}
+.estrela[aria-pressed="true"]{color:var(--terre)}
+.estrela:focus-visible{outline:2px solid var(--terre)}
+.metricas{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px}
+.card .duas{grid-template-columns:1fr auto}

@@ -59,8 +59,8 @@ function vPainel(){
  return `<div class="largo">
  <div class="cab"><span class="label"><span class="ast">✱</span>Painel</span><h1>O que tá em movimento</h1><p class="muted">Seu estudo, as pendências e o que está andando na esteira do perfil.</p></div>
  <div class="painel">
-  <div class="cartao" style="grid-column:1/-1"><span class="label">Bootcamp de Estratégia 2026.3 · Miami Ad School</span>
-   <div class="grade">${AULAS.map(a=>`<button class="aula-linha" data-aula="${a.id}"><span class="num">${a.n}</span><span><b>${esc(a.titulo)}</b><br><span class="muted" style="font-size:13.5px">${esc(a.prof)}</span></span><span class="chip st-${S.status[a.id]||0}">${STATUS[S.status[a.id]||0]}</span></button>`).join("")}</div></div>
+  ${CURSOS.map(cu=>`<div class="cartao" style="grid-column:1/-1"><span class="label">${esc(cu.nome)} · ${esc(cu.sub)}</span>
+   <div class="grade">${AULAS.filter(a=>cursoDe(a).id===cu.id).map(linhaAula).join("")}</div></div>`).join("")}
   <div class="cartao"><span class="label">Pendências abertas · ${abertas.length}</span><ul class="lista">${abertas.slice(0,5).map(p=>`<li><span>${esc(p.texto)}</span></li>`).join("")||"<li class='muted'>Nada pendente.</li>"}</ul><div><button class="btn mini fant" data-go="pendencias">Ver todas</button></div></div>
   <div class="cartao"><span class="label">Esteira do perfil · ${S.esteira.length} conteúdos</span><ul class="lista">${Object.keys(porEtapa).map(k=>`<li><span>${esc(k)}</span><b>${porEtapa[k]}</b></li>`).join("")||"<li class='muted'>Nenhum conteúdo na esteira.</li>"}</ul><div><button class="btn mini fant" data-go="esteira">Abrir esteira</button></div></div>
   <div class="cartao"><span class="label">Próximas datas</span><ul class="lista">${prox.map(c=>`<li><span>${esc(c.titulo)}</span><span class="chip bleu">${dataBR(c.data)}</span></li>`).join("")||"<li class='muted'>Nenhum conteúdo com data. Abra um card na esteira e coloque a data prevista.</li>"}</ul></div>
@@ -68,10 +68,14 @@ function vPainel(){
  </div></div>`;
 }
 
+function linhaAula(a,comData){
+ const num=a.rotulo?"✱":a.n;
+ return `<button class="aula-linha" data-aula="${a.id}"><span class="num">${num}</span><span><b>${esc(a.titulo)}</b><br><span class="muted" style="font-size:13.5px">${esc(a.prof)}${comData?" · "+esc(a.data):""}</span></span><span class="chip st-${S.status[a.id]||0}">${STATUS[S.status[a.id]||0]}</span></button>`;
+}
 function vBiblioteca(){
  return `<div class="largo"><div class="cab"><span class="label"><span class="ast">✱</span>Biblioteca</span><h1>Tudo o que você está estudando</h1><p class="muted">Cursos, livros, vídeos e artigos. Cada fonte vira páginas para estudar.</p></div>
- <div class="cartao" style="margin-bottom:22px"><div class="linha-btns" style="justify-content:space-between"><div><span class="chip terre">Curso</span><h2 style="margin-top:8px">Bootcamp de Estratégia 2026.3</h2><p class="muted">Miami Ad School · 3 aulas resumidas</p></div></div>
-  <div style="display:grid;gap:10px">${AULAS.map(a=>`<button class="aula-linha" data-aula="${a.id}"><span class="num">${a.n}</span><span><b>${esc(a.titulo)}</b><br><span class="muted" style="font-size:13.5px">${esc(a.prof)} · ${esc(a.data)}</span></span><span class="chip st-${S.status[a.id]||0}">${STATUS[S.status[a.id]||0]}</span></button>`).join("")}</div></div>
+ ${CURSOS.map(cu=>{const as=AULAS.filter(a=>cursoDe(a).id===cu.id);return `<div class="cartao" style="margin-bottom:22px"><div><span class="chip terre">${esc(cu.tipo)}</span><h2 style="margin-top:8px">${esc(cu.nome)}</h2><p class="muted">${esc(cu.sub)} · ${as.length} ${as.length===1?"aula resumida":"aulas resumidas"}</p></div>
+  <div style="display:grid;gap:10px">${as.map(a=>linhaAula(a,true)).join("")}</div></div>`}).join("")}
  <h2 style="margin-bottom:12px">Outras fontes</h2>
  <div class="grade" style="margin-bottom:22px">${S.fontes.map(f=>`<div class="cartao"><span class="chip">${esc(f.tipo)}</span><h3>${esc(f.titulo)}</h3>${f.autor?`<p class="muted">${esc(f.autor)}</p>`:""}${f.link?`<a href="${esc(f.link)}" target="_blank" rel="noopener">Abrir link</a>`:""}${f.notas?`<p style="font-size:14.5px">${esc(f.notas)}</p>`:""}<div><button class="btn mini fant" data-delfonte="${f.id}">Remover</button></div></div>`).join("")||`<p class="vazio" style="grid-column:1/-1">Nenhum livro, vídeo ou artigo ainda. Adicione o primeiro abaixo.</p>`}</div>
  <form class="cartao form" id="f-fonte"><span class="label">Adicionar fonte</span>
@@ -89,20 +93,20 @@ function vAula(){
  let corpo="";
  if(tab==="resumo") corpo=`<div class="resumo">${a.resumo}</div>`;
  if(tab==="ferramenta") corpo=`<div class="cartao"><span class="label">Ferramenta desta aula</span><h2>${esc(f.nome)}</h2><p>${esc(f.desc)}</p><div><button class="btn pri" data-ferr="${f.id}">Abrir ferramenta</button></div></div>`;
- if(tab==="pautas") corpo=pautas.length?`<p class="muted" style="margin-bottom:14px">${pautas.length} pautas para o seu perfil. Mande para a esteira as que quiser produzir.</p><div style="display:grid;gap:12px">${pautas.map(cardPauta).join("")}</div>`:`<p class="vazio">Nenhuma pauta saiu desta aula ainda.</p>`;
+ if(tab==="pautas") corpo=pautas.length?`<p class="muted" style="margin-bottom:14px">${pautas.length} pautas para o seu perfil. Mande para a esteira as que quiser produzir.</p><div style="display:grid;gap:12px">${pautas.map(cardPauta).join("")}</div>`:`<p class="vazio">${a.curso==="alana"?"Sem pautas sugeridas, de propósito: nesse método a ideia tem que vir de você. Anote na aba Insights ou ponha direto na esteira.":"Nenhuma pauta saiu desta aula ainda."}</p>`;
  if(tab==="insights") corpo=`<form class="cartao form" id="f-insight" data-insaula="${a.id}"><span class="label">Novo insight</span>
    <div class="campo"><label for="fi-texto">O que você pensou a partir da aula</label><textarea id="fi-texto" required placeholder="Ex.: levar a pergunta “o que é sucesso pra você?” para todo briefing da ÔDO"></textarea></div>
    <div class="linha-btns"><span class="campo" style="font-size:13px;font-weight:600;color:var(--suave)">Aplicar em</span><label class="check"><input type="checkbox" id="fi-odo" checked> ÔDO</label><label class="check"><input type="checkbox" id="fi-perfil"> Meu Perfil</label></div>
    <div class="duas"><div class="campo"><label for="fi-data">Quando agir (opcional)</label><input type="date" id="fi-data"></div></div>
    <div><button class="btn pri" type="submit">Salvar insight</button></div></form>
    <div style="display:grid;gap:12px;margin-top:16px">${ins.map(i=>`<div class="cartao"><p>${esc(i.texto)}</p><div class="chips">${i.odo?'<span class="chip terre">ÔDO</span>':""}${i.perfil?'<span class="chip bleu">Meu Perfil</span>':""}${i.data?`<span class="chip">${dataBR(i.data)}</span>`:""}</div>
-    <div class="linha-btns"><a class="btn mini" href="${gcal(i.texto.slice(0,80),i.data,"Insight da aula "+a.n+" ("+a.titulo+"): "+i.texto)}" target="_blank" rel="noopener">Marcar na agenda</a>${i.perfil?`<button class="btn mini" data-insightpauta="${i.id}">Virar ideia na esteira</button>`:""}<button class="btn mini fant" data-delinsight="${i.id}">Excluir</button></div></div>`).join("")||`<p class="vazio">Nenhum insight desta aula ainda.</p>`}</div>`;
+    <div class="linha-btns"><a class="btn mini" href="${gcal(i.texto.slice(0,80),i.data,"Insight da aula "+a.titulo+": "+i.texto)}" target="_blank" rel="noopener">Marcar na agenda</a>${i.perfil?`<button class="btn mini" data-insightpauta="${i.id}">Virar ideia na esteira</button>`:""}<button class="btn mini fant" data-delinsight="${i.id}">Excluir</button></div></div>`).join("")||`<p class="vazio">Nenhum insight desta aula ainda.</p>`}</div>`;
  if(tab==="bruto") corpo=`<div style="display:grid;gap:16px"><div class="cartao"><span class="label">Arquivos originais</span><ul style="margin:0;padding-left:20px">${a.arquivos.map(x=>`<li>${esc(x)}</li>`).join("")}</ul><p class="aviso">No protótipo os arquivos ficam listados. Na versão com Supabase eles ficam anexados aqui para abrir e baixar.</p></div>
   ${a.anotacoes?`<div class="cartao"><span class="label">Suas anotações</span><p style="white-space:pre-wrap;font-size:15px">${esc(a.anotacoes)}</p></div>`:`<p class="vazio">As anotações desta aula estão no PDF original.</p>`}</div>`;
  const tabs=[["resumo","Resumo"],["ferramenta","Ferramenta"],["pautas","Pautas",pautas.length],["insights","Insights",ins.length],["bruto","Material bruto"]];
  return `<div class="ler">
- <div class="cab"><div class="migalha"><button data-go="biblioteca">Biblioteca</button><span>›</span><span>Bootcamp de Estratégia</span><span>›</span><span>Aula ${a.n}</span></div>
-  <span class="label">Aula ${a.n} · ${esc(a.prof)} · ${esc(a.data)}</span><h1>${esc(a.nomeCompleto)}</h1><p class="tese">${esc(a.tese)}</p>
+ <div class="cab"><div class="migalha"><button data-go="biblioteca">Biblioteca</button><span>›</span><span>${esc(cursoDe(a).nome)}</span><span>›</span><span>${esc(rotAula(a))}</span></div>
+  <span class="label">${a.rotulo?esc(cursoDe(a).tipo):"Aula "+a.n} · ${esc(a.prof)} · ${esc(a.data)}</span><h1>${esc(a.nomeCompleto)}</h1><p class="tese">${esc(a.tese)}</p>
   <div class="linha-btns"><label class="muted" for="st-${a.id}" style="font-size:14px">Status</label><select id="st-${a.id}" data-status="${a.id}" style="width:auto">${STATUS.map((s,i)=>`<option value="${i}" ${(S.status[a.id]||0)===i?"selected":""}>${s}</option>`).join("")}</select></div></div>
  <div class="pontos"><span class="label" style="color:var(--espresso)">Pontos principais</span><ul>${a.pontos.map(p=>`<li><span>${esc(p)}</span></li>`).join("")}</ul></div>
  <div class="abas" role="tablist">${tabs.map(([k,l,n])=>`<button role="tab" aria-selected="${tab===k}" data-tab="${k}">${l}${n!=null?`<span class="n">${n}</span>`:""}</button>`).join("")}</div>
@@ -119,7 +123,7 @@ function cardPauta(p){
 
 function vFerramentas(){
  return `<div class="largo"><div class="cab"><span class="label"><span class="ast">✱</span>Estante de ferramentas</span><h1>Para abrir no meio de um projeto</h1><p class="muted">Os métodos e frameworks que saíram das aulas, reunidos num lugar só.</p></div>
- <div class="grade">${FERRAMENTAS.map(f=>`<div class="cartao"><span class="chip">Aula ${aulaDe(f.aula).n}</span><h3>${esc(f.nome)}</h3><p style="font-size:15px">${esc(f.desc)}</p><div><button class="btn pri mini" data-ferr="${f.id}">Abrir</button></div></div>`).join("")}</div></div>`;
+ <div class="grade">${FERRAMENTAS.map(f=>`<div class="cartao"><span class="chip">${esc(rotAula(aulaDe(f.aula)))}</span><h3>${esc(f.nome)}</h3><p style="font-size:15px">${esc(f.desc)}</p><div><button class="btn pri mini" data-ferr="${f.id}">Abrir</button></div></div>`).join("")}</div></div>`;
 }
 
 let faseSel=0;
@@ -160,25 +164,47 @@ function vFerramenta(){
   c=`<div class="grade">${[["P","Um dia","O que chega e precisa de resposta rápida. Grande volume."],["M","Uma semana","Projetos com potencial de escala, onde vale negociar mais dias."],["G","Um mês","Planejamento anual ou projeto especial. Um ou dois por ano."]].map(x=>`<div class="cartao"><span class="gancho" style="font-size:40px;color:var(--terre)">${x[0]}</span><h3>${x[1]}</h3><p style="font-size:15px">${x[2]}</p></div>`).join("")}</div>
   <p style="margin-top:16px">Como esticar prazo: mostrando valor. Ganhou 3 dias, mostre o que os 3 dias renderam, e no próximo peça 4.</p><p class="aviso" style="margin-top:12px">A nomenclatura ficou embaralhada na transcrição. Conferir com a professora.</p>`;
  }
+ if(f.id==="carrossel"){
+  const P=S.prompt||{};
+  c=`<div class="cartao"><span class="label">Checklist do carrossel magnético</span><p class="tese" style="font-size:19px">Precisa dar check nos 8 antes de publicar. Se um falhar, volta e arruma.</p>
+   <ol class="checklista">${CHECK_CARROSSEL.map((x,i)=>`<li><span class="nn">0${i+1}</span><span>${esc(x)}</span></li>`).join("")}</ol>
+   <p class="aviso">Na esteira, cada carrossel tem esse checklist e só passa para Postagem com os 8 marcados.</p></div>
+  <h2 style="margin:30px 0 6px">Montador do prompt</h2>
+  <p class="muted" style="margin-bottom:14px">Você escreve os quatro insumos, o prompt sai pronto para colar no Claude. Na esteira, cada carrossel tem os mesmos campos.</p>
+  <div class="form cartao">${camposPrompt(P,"pr")}
+   <div class="linha-btns"><button class="btn pri" type="button" data-copiar="geral">Copiar prompt</button></div>
+   <details class="mais"><summary>Ver o prompt completo</summary><pre class="prompt">${esc(promptCarrossel(P))}</pre></details></div>
+  <h2 style="margin:30px 0 12px">Palavras e emoções</h2>
+  <div class="grade">
+   <div class="cartao"><span class="chip terre">Palavras fortes</span><p style="font-size:15px">vergonha · cafonice · pobre · rico · indignado · confronto · arrasada</p></div>
+   <div class="cartao"><span class="chip terre">Alta ativação</span><p style="font-size:15px">raiva · indignação · vergonha · FOMO · surpresa</p></div>
+   <div class="cartao"><span class="chip">Mornas, evitar</span><p style="font-size:15px">calma · gratidão · inspiração</p></div>
+  </div>`;
+ }
  return `<div class="ler"><div class="cab"><div class="migalha"><button data-go="ferramentas">Estante de ferramentas</button><span>›</span><span>${esc(f.nome)}</span></div>
- <span class="label">Da aula ${a.n} · ${esc(a.titulo)}</span><h1>${esc(f.nome)}</h1></div>${c}</div>`;
+ <span class="label">Da aula ${esc(a.titulo)} · ${esc(cursoDe(a).nome)}</span><h1>${esc(f.nome)}</h1></div>${c}</div>`;
 }
 
+function camposPrompt(I,pre){
+ const cs=[["pauta","Pauta","Fato + o que eu acho disso","text"],["headline","Ideia de headline","Uma linha","text"],["conversa","Como eu contaria pra uma amiga","Escreve corrido, sem se preocupar com cards","area"],["publico","Público","Pra quem eu falo","text"]];
+ return cs.map(([k,l,ph,t])=>`<div class="campo"><label for="${pre}-${k}">${l}</label>${t==="area"?`<textarea id="${pre}-${k}" data-pr="${pre}|${k}" placeholder="${ph}" style="min-height:110px">${esc(I[k]||"")}</textarea>`:`<input type="text" id="${pre}-${k}" data-pr="${pre}|${k}" placeholder="${ph}" value="${esc(I[k]||"")}">`}</div>`).join("");
+}
 function vPendencias(){
  const todas=[...PEND_BASE,...S.pendExtra];
  const linha=p=>{const a=aulaDe(p.aula);const feito=!!S.pendDone[p.id];return `<div class="cartao" style="${feito?"opacity:.6":""}"><label class="check" style="align-items:flex-start"><input type="checkbox" data-pend="${p.id}" ${feito?"checked":""} style="margin-top:4px"><span style="${feito?"text-decoration:line-through":""}">${esc(p.texto)}</span></label>
-  <div class="chips">${a?`<span class="chip">Aula ${a.n}</span>`:""}${p.ligado?`<span class="chip bleu">${esc(p.ligado)}</span>`:""}</div>
+  <div class="chips">${a?`<span class="chip">${esc(rotAula(a))}</span>`:""}${p.ligado?`<span class="chip bleu">${esc(p.ligado)}</span>`:""}</div>
   ${feito?"":`<div class="linha-btns"><a class="btn mini" href="${gcal(p.texto,"","Pendência do Caderno de Estudos")}" target="_blank" rel="noopener">Marcar na agenda</a>${p.extra?`<button class="btn mini fant" data-delpend="${p.id}">Excluir</button>`:""}</div>`}</div>`};
  const ab=todas.filter(p=>!S.pendDone[p.id]),fe=todas.filter(p=>S.pendDone[p.id]);
  return `<div class="ler"><div class="cab"><span class="label"><span class="ast">✱</span>Pendências</span><h1>O que ficou para completar</h1><p class="muted">Coisas que as aulas deixaram em aberto e que destravam pautas ou ferramentas.</p></div>
  <div style="display:grid;gap:10px">${ab.map(linha).join("")||`<p class="vazio">Tudo resolvido.</p>`}</div>
- <form class="cartao form" id="f-pend" style="margin-top:18px"><span class="label">Nova pendência</span><div class="duas"><div class="campo"><label for="fp-texto">O que falta</label><input type="text" id="fp-texto" required></div><div class="campo"><label for="fp-aula">Aula</label><select id="fp-aula"><option value="">Nenhuma</option>${AULAS.map(a=>`<option value="${a.id}">Aula ${a.n} · ${esc(a.titulo)}</option>`).join("")}</select></div></div><div><button class="btn pri" type="submit">Adicionar</button></div></form>
+ <form class="cartao form" id="f-pend" style="margin-top:18px"><span class="label">Nova pendência</span><div class="duas"><div class="campo"><label for="fp-texto">O que falta</label><input type="text" id="fp-texto" required></div><div class="campo"><label for="fp-aula">Aula</label><select id="fp-aula"><option value="">Nenhuma</option>${AULAS.map(a=>`<option value="${a.id}">${esc(rotAula(a))} · ${esc(a.titulo)}</option>`).join("")}</select></div></div><div><button class="btn pri" type="submit">Adicionar</button></div></form>
  ${fe.length?`<h3 style="margin:28px 0 10px">Resolvidas</h3><div style="display:grid;gap:10px">${fe.map(linha).join("")}</div>`:""}</div>`;
 }
 
 function vEstrategia(){
- const blocos=["Posicionamento: quem eu sou aqui, como dona da ÔDO e estrategista","Público","Promessa do perfil","Pilares","Editorias","Tom de voz","Funil e monetização"];
- return `<div class="ler"><div class="cab"><span class="label" style="color:var(--bleu-tinta)"><span class="ast">✱</span>Meu Perfil · Estratégia</span><h1>A estratégia do meu perfil</h1><p class="aviso">Em branco de propósito. Você vai repensar a estratégia falando como dona da ÔDO e estrategista, e a gente preenche quando estiver definida.</p></div>
+ const blocos=["Posicionamento: quem eu sou aqui, como dona da ÔDO e estrategista","Opiniões-âncora: o que eu repetiria pelo resto da vida","Público","Promessa do perfil","Pilares","Editorias","O que eu não falo","Tom de voz","Funil e monetização"];
+ return `<div class="ler"><div class="cab"><span class="label" style="color:var(--bleu-tinta)"><span class="ast">✱</span>Meu Perfil · Estratégia</span><h1>A estratégia do meu perfil</h1><p class="aviso">Em branco de propósito. Você vai repensar a estratégia falando como dona da ÔDO e estrategista, e a gente preenche quando estiver definida.</p>
+  <div class="pontos" style="background:var(--bleu-fundo)"><span class="label" style="color:var(--bleu-tinta)">Pergunta de partida</span><p class="gancho">O que eu teria coragem de dizer em voz alta todos os dias, pelo resto da vida?</p><p class="muted" style="font-size:14px">Da aula Carrossel Magnético, com a Alana Miranda. Conteúdo é opinião dita em voz alta; posicionamento é a coragem de repetir.</p></div></div>
  <div style="display:grid;gap:10px">${blocos.map(b=>`<div class="cartao" style="border-top:4px solid var(--bleu)"><h3>${b}</h3><p class="muted" style="font-size:14px">A definir.</p></div>`).join("")}</div></div>`;
 }
 
@@ -191,42 +217,74 @@ function vEsteira(){
  <form class="cartao form" id="f-ideia" style="margin-bottom:18px"><span class="label">Nova ideia</span><div class="duas"><div class="campo"><label for="fn-titulo">Ideia</label><input type="text" id="fn-titulo" required placeholder="O gancho ou a ideia em uma frase"></div><div class="campo"><label for="fn-fmt">Formato</label><select id="fn-fmt"><option value="reels" ${fmt==="reels"?"selected":""}>Reels</option><option value="carrossel" ${fmt==="carrossel"?"selected":""}>Carrossel</option></select></div></div><div><button class="btn pri" type="submit">Pôr na esteira</button></div></form>
  <div class="quadro"><div class="colunas">${cols.map((nome,i)=>{const cs=cards.filter(c=>c.etapa===i);return `<div class="coluna"><h4>${nome}<span class="n">${cs.length}</span></h4>${cs.map(c=>cardEsteira(c,cols)).join("")||`<div class="vazio">Nada aqui</div>`}</div>`}).join("")}</div></div></div>`;
 }
+const abertos=new Set();
+const ETAPA_POSTAGEM=ETAPAS.carrossel.indexOf("Postagem");
+const nCheck=c=>CHECK_CARROSSEL.filter((_,i)=>c.check&&c.check[i]).length;
 function cardEsteira(c,cols){
  const p=c.pauta?PAUTAS.find(x=>x.id===c.pauta):null; const a=c.aula?aulaDe(c.aula):null;
- return `<div class="card"><span class="t">${esc(c.titulo)}</span><div class="chips">${a?`<span class="chip">Aula ${a.n}</span>`:""}${c.origem==="comentario"?`<span class="chip">De um comentário</span>`:""}${c.data?`<span class="chip miel">${dataBR(c.data)}</span>`:""}</div>
- <details class="mais"><summary>Detalhes</summary><div class="form">
+ const car=c.formato==="carrossel", hs=c.headlines||[], esc_h=hs.find(h=>h.id===c.headline);
+ const nk=car?nCheck(c):0;
+ const blocoCarrossel=car?`
+  <div class="campo"><label for="fc-${c.id}">Formato do carrossel</label><select id="fc-${c.id}" data-cfc="${c.id}"><option value="">Escolher</option>${FORMATOS_CARROSSEL.map(x=>`<option ${c.fmtCarrossel===x?"selected":""}>${x}</option>`).join("")}</select></div>
+  <div class="bloco"><span class="label">Insumos do prompt</span>${camposPrompt(c.ins||{},"c"+c.id)}<div><button class="btn mini pri" type="button" data-copiar="${c.id}">Copiar prompt preenchido</button></div></div>
+  <div class="bloco"><span class="label">Versões de headline</span>
+   ${hs.map(h=>`<div class="hl ${h.id===c.headline?"on":""}"><button class="estrela" type="button" data-hesc="${c.id}|${h.id}" aria-label="Escolher esta headline" aria-pressed="${h.id===c.headline}">✱</button><span>${esc(h.texto)}</span><button class="btn mini fant" type="button" data-hdel="${c.id}|${h.id}" aria-label="Apagar versão">×</button></div>`).join("")||`<p class="muted" style="font-size:13px">Guarde aqui as tentativas. A escolhida vira a capa do card.</p>`}
+   <form class="duas" style="grid-template-columns:1fr auto" data-fhead="${c.id}"><input type="text" id="h-${c.id}" placeholder="Nova versão, em uma linha" aria-label="Nova versão de headline" required><button class="btn mini" type="submit">Guardar</button></form></div>
+  <div class="bloco"><span class="label">Checklist · ${nk}/8</span>${CHECK_CARROSSEL.map((x,i)=>`<label class="check" style="align-items:flex-start;font-size:13.5px"><input type="checkbox" data-ccheck="${c.id}|${i}" ${c.check&&c.check[i]?"checked":""} style="margin-top:3px"><span>${esc(x)}</span></label>`).join("")}<p class="muted" style="font-size:12.5px">Só vai para Postagem com os 8 marcados.</p></div>`:"";
+ return `<div class="card"><span class="t">${esc(c.titulo)}</span>${esc_h?`<span class="capa">${esc(esc_h.texto)}</span>`:""}<div class="chips">${a?`<span class="chip">${esc(rotAula(a))}</span>`:""}${c.origem==="comentario"?`<span class="chip">De um comentário</span>`:""}${car&&c.fmtCarrossel?`<span class="chip bleu">${esc(c.fmtCarrossel)}</span>`:""}${car?`<span class="chip ${nk===8?"ok":""}">Checklist ${nk}/8</span>`:""}${c.data?`<span class="chip miel">${dataBR(c.data)}</span>`:""}</div>
+ <details class="mais" data-det="${c.id}" ${abertos.has(c.id)?"open":""}><summary>Detalhes</summary><div class="form">
   ${p?`<p style="font-size:13.5px" class="muted">${esc(p.angulo)}</p>`:""}
   <div class="campo"><label for="d-${c.id}">Data prevista</label><input type="date" id="d-${c.id}" data-cdata="${c.id}" value="${esc(c.data)}"></div>
-  <div class="campo"><label for="n-${c.id}">Texto, roteiro ou notas</label><textarea id="n-${c.id}" data-cnotas="${c.id}">${esc(c.notas||(p?p.esboco.map((e,i)=>(i+1)+". "+e).join("\n"):""))}</textarea></div>
+  ${blocoCarrossel}
+  <div class="campo"><label for="n-${c.id}">${car?"Texto dos cards, legenda ou notas":"Texto, roteiro ou notas"}</label><textarea id="n-${c.id}" data-cnotas="${c.id}">${esc(c.notas||(p?p.esboco.map((e,i)=>(i+1)+". "+e).join("\n"):""))}</textarea></div>
   <div class="linha-btns"><a class="btn mini" href="${gcal(c.titulo,c.data,"Conteúdo do perfil: "+c.titulo)}" target="_blank" rel="noopener">Agenda</a>${a?`<button class="btn mini fant" type="button" data-aula="${a.id}">Ver aula</button>`:""}<button class="btn mini fant" type="button" data-delcard="${c.id}">Excluir</button></div></div></details>
  <div class="mover"><button class="btn mini fant" data-mv="${c.id}" data-d="-1" ${c.etapa===0?"disabled":""} aria-label="Voltar etapa">‹ Voltar</button><button class="btn mini" data-mv="${c.id}" data-d="1" ${c.etapa===cols.length-1?"disabled":""} aria-label="Avançar etapa">Avançar ›</button></div></div>`;
 }
 
+const num=v=>Number(v)||0;
+const fmtN=n=>n.toLocaleString("pt-BR");
+const curto=n=>n>=1000?(n/1000).toFixed(1).replace(".",",")+"k":String(n);
+function barras(lista,valor,cor,rot){
+ const max=Math.max(1,...lista.map(valor));
+ return lista.map(f=>`<div class="barra"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(rot?rot(f):f.titulo)}</span><span class="trilho"><span class="enche" style="display:block;width:${valor(f)/max*100}%;${cor?"background:"+cor:""}"></span></span><span class="v">${curto(valor(f))}</span></div>`).join("");
+}
 function vAnalise(){
- const F=S.analise, num=v=>Number(v)||0;
- const tv=F.reduce((s,f)=>s+num(f.views),0),tl=F.reduce((s,f)=>s+num(f.likes),0),tc=F.reduce((s,f)=>s+num(f.ncom),0);
+ const F=S.analise;
+ const soma=k=>F.reduce((s,f)=>s+num(f[k]),0);
  const media=t=>{const x=F.filter(f=>f.formato===t&&num(f.views));return x.length?Math.round(x.reduce((s,f)=>s+num(f.views),0)/x.length):0};
  const cont={};TAGS.forEach(t=>cont[t]=0);F.forEach(f=>f.comentarios.forEach(c=>cont[c.tag]=(cont[c.tag]||0)+1));
  const maxT=Math.max(1,...Object.values(cont));
- const rank=[...F].sort((a,b)=>num(b.views)-num(a.views)).slice(0,5);const maxV=Math.max(1,...rank.map(f=>num(f.views)));
- const fmtN=n=>n.toLocaleString("pt-BR");
- return `<div class="largo"><div class="cab"><span class="label" style="color:var(--bleu-tinta)"><span class="ast">✱</span>Meu Perfil · Análise</span><h1>Como os conteúdos estão indo</h1><p class="muted">Cada conteúdo que chega na etapa Análise da esteira ganha uma ficha aqui. Você preenche os números à mão.</p></div>
- <div class="kpis"><div class="kpi"><span class="label">Visualizações</span><b>${fmtN(tv)}</b></div><div class="kpi"><span class="label">Curtidas</span><b>${fmtN(tl)}</b></div><div class="kpi"><span class="label">Comentários</span><b>${fmtN(tc)}</b></div><div class="kpi"><span class="label">Média reels · carrossel</span><b style="font-size:22px">${fmtN(media("reels"))} · ${fmtN(media("carrossel"))}</b></div></div>
+ const rel=f=>num(f.shares)+num(f.saves);
+ const rankV=[...F].filter(f=>num(f.views)).sort((a,b)=>num(b.views)-num(a.views)).slice(0,5);
+ const rankR=[...F].filter(f=>rel(f)).sort((a,b)=>rel(b)-rel(a)).slice(0,5);
+ const porFmt=FORMATOS_CARROSSEL.map(fm=>{const x=F.filter(f=>f.fmtVisual===fm&&num(f.views));return {titulo:fm,n:x.length,m:x.length?Math.round(x.reduce((s,f)=>s+num(f.views),0)/x.length):0}}).filter(x=>x.n);
+ return `<div class="largo"><div class="cab"><span class="label" style="color:var(--bleu-tinta)"><span class="ast">✱</span>Meu Perfil · Análise</span><h1>Como os conteúdos estão indo</h1><p class="muted">Cada conteúdo que chega na etapa Análise da esteira ganha uma ficha aqui. Você preenche os números à mão. Curtida é a reação mais barata: compartilhamento e salvamento dizem mais.</p></div>
+ <div class="kpis"><div class="kpi"><span class="label">Visualizações</span><b>${fmtN(soma("views"))}</b></div><div class="kpi"><span class="label">Compartilhamentos</span><b>${fmtN(soma("shares"))}</b></div><div class="kpi"><span class="label">Salvamentos</span><b>${fmtN(soma("saves"))}</b></div><div class="kpi"><span class="label">Comentários</span><b>${fmtN(soma("ncom"))}</b></div><div class="kpi"><span class="label">Curtidas</span><b>${fmtN(soma("likes"))}</b></div><div class="kpi"><span class="label">Média reels · carrossel</span><b style="font-size:22px">${fmtN(media("reels"))} · ${fmtN(media("carrossel"))}</b></div></div>
  <div class="painel" style="margin-top:16px">
+  <div class="cartao"><span class="label">Relevância: compartilhamentos + salvamentos</span>${barras(rankR,rel,"var(--terre)")||"<p class='muted'>Preencha compartilhamentos e salvamentos nas fichas.</p>"}</div>
+  <div class="cartao"><span class="label">Alcance: visualizações</span>${barras(rankV,f=>num(f.views),"var(--bleu)")||"<p class='muted'>Sem visualizações preenchidas.</p>"}</div>
+  <div class="cartao"><span class="label">Média de views por formato de carrossel</span>${barras(porFmt,x=>x.m,"var(--eau)",x=>x.titulo+" ("+x.n+")")||"<p class='muted'>Marque o formato nas fichas de carrossel para ver qual repetir.</p>"}</div>
   <div class="cartao"><span class="label">Que conversas eu estou gerando</span>${TAGS.map(t=>`<div class="barra"><span>${t}</span><span class="trilho"><span class="enche" style="display:block;width:${cont[t]/maxT*100}%"></span></span><span class="v">${cont[t]}</span></div>`).join("")}</div>
-  <div class="cartao"><span class="label">Ranking por visualizações</span>${rank.map(f=>`<div class="barra"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(f.titulo)}</span><span class="trilho"><span class="enche" style="display:block;width:${num(f.views)/maxV*100}%;background:var(--terre)"></span></span><span class="v">${num(f.views)>=1000?(num(f.views)/1000).toFixed(1)+"k":num(f.views)}</span></div>`).join("")||"<p class='muted'>Sem fichas ainda.</p>"}</div>
  </div>
  <h2 style="margin:30px 0 12px">Fichas</h2>
  <div style="display:grid;gap:14px">${F.map(fichaHTML).join("")||`<p class="vazio">Quando um conteúdo chegar em Análise na esteira, a ficha aparece aqui.</p>`}</div></div>`;
 }
 function fichaHTML(f){
+ const regs=[...(f.registros||[])].sort((a,b)=>a.data<b.data?-1:1);
+ const met=[["views","Visualizações","v"],["shares","Compartilhamentos","s"],["saves","Salvamentos","sv"],["ncom","Comentários","c"],["likes","Curtidas","l"]];
+ const cresc=regs.length>1?`<p class="muted" style="font-size:13.5px">De ${fmtN(num(regs[0].views))} em ${dataBR(regs[0].data)} para ${fmtN(num(regs[regs.length-1].views))} em ${dataBR(regs[regs.length-1].data)}.</p>`:"";
  return `<div class="cartao"><div class="linha-btns" style="justify-content:space-between"><div class="chips">${f.exemplo?'<span class="chip miel">Exemplo</span>':""}<span class="chip">${f.formato==="reels"?"Reels":"Carrossel"}</span></div><button class="btn mini fant" data-delficha="${f.id}">Excluir ficha</button></div>
  <h3>${esc(f.titulo)}</h3>
- <div class="duas" style="grid-template-columns:repeat(3,minmax(0,1fr))"><div class="campo"><label for="v-${f.id}">Visualizações</label><input type="number" min="0" id="v-${f.id}" data-fm="${f.id}" data-k="views" value="${esc(f.views)}"></div><div class="campo"><label for="l-${f.id}">Curtidas</label><input type="number" min="0" id="l-${f.id}" data-fm="${f.id}" data-k="likes" value="${esc(f.likes)}"></div><div class="campo"><label for="c-${f.id}">Comentários</label><input type="number" min="0" id="c-${f.id}" data-fm="${f.id}" data-k="ncom" value="${esc(f.ncom)}"></div></div>
+ ${f.formato==="carrossel"?`<div class="campo" style="max-width:280px"><label for="fv-${f.id}">Formato do carrossel</label><select id="fv-${f.id}" data-fm="${f.id}" data-k="fmtVisual"><option value="">Escolher</option>${FORMATOS_CARROSSEL.map(x=>`<option ${f.fmtVisual===x?"selected":""}>${x}</option>`).join("")}</select></div>`:""}
+ <div class="metricas">${met.map(([k,l,p])=>`<div class="campo"><label for="${p}-${f.id}">${l}</label><input type="number" min="0" id="${p}-${f.id}" data-fm="${f.id}" data-k="${k}" value="${esc(f[k]==null?"":f[k])}"></div>`).join("")}</div>
+ <details class="mais"><summary>Acompanhar o crescimento${regs.length?" · "+regs.length+(regs.length===1?" registro":" registros"):""}</summary><div class="form">
+  <p class="muted" style="font-size:13.5px">Carrossel cresce por semanas. Anote as visualizações de tempos em tempos; o último registro atualiza o total da ficha.</p>
+  ${regs.map(r=>`<div class="linha-btns" style="justify-content:space-between;border-bottom:1px dashed var(--linha);padding-bottom:6px"><span style="font-size:14px">${dataBR(r.data)}</span><b style="font-variant-numeric:tabular-nums">${fmtN(num(r.views))}</b><button class="btn mini fant" type="button" data-delreg="${f.id}|${r.id}" aria-label="Apagar registro">×</button></div>`).join("")}${cresc}
+  <form class="duas" style="grid-template-columns:1fr 1fr auto" data-freg="${f.id}"><input type="date" id="rd-${f.id}" value="${hoje()}" aria-label="Data" required><input type="number" min="0" id="rv-${f.id}" placeholder="Visualizações" aria-label="Visualizações" required><button class="btn mini" type="submit">Registrar</button></form></div></details>
  <span class="label">Comentários que valem guardar</span>
  <div style="display:grid;gap:8px">${f.comentarios.map(c=>`<div class="comentario"><p style="font-size:15px">${esc(c.texto)}</p><div class="linha-btns"><select data-ctag="${f.id}|${c.id}" style="width:auto;padding:4px 8px;font-size:13px" aria-label="Tipo de conversa">${TAGS.map(t=>`<option ${t===c.tag?"selected":""}>${t}</option>`).join("")}</select><button class="btn mini" data-viraideia="${f.id}|${c.id}">Virar ideia</button><button class="btn mini fant" data-delcom="${f.id}|${c.id}">Excluir</button></div></div>`).join("")||"<p class='muted' style='font-size:14px'>Nenhum comentário guardado.</p>"}</div>
  <form class="form" data-fcom="${f.id}"><div class="duas" style="grid-template-columns:1fr auto"><input type="text" id="nc-${f.id}" placeholder="Cole um comentário" aria-label="Novo comentário" required><select id="nt-${f.id}" style="width:auto" aria-label="Tipo">${TAGS.map(t=>`<option>${t}</option>`).join("")}</select></div><div><button class="btn mini" type="submit">Guardar comentário</button></div></form>
- <div class="campo"><label for="i-${f.id}">Meus insights</label><textarea id="i-${f.id}" data-fm="${f.id}" data-k="insights" placeholder="O que funcionou, o que não funcionou, o que testar no próximo">${esc(f.insights)}</textarea></div></div>`;
+ <div class="campo"><label for="i-${f.id}">Meus insights</label><textarea id="i-${f.id}" data-fm="${f.id}" data-k="insights" placeholder="O que funcionou, o que não funcionou, que formato repetir">${esc(f.insights)}</textarea></div></div>`;
 }
 
 /* ---------------- render ---------------- */
@@ -242,7 +300,12 @@ function render(){
 
 /* ---------------- ações ---------------- */
 function paraEsteira(c){S.esteira.push(Object.assign({id:uid(),etapa:0,data:"",notas:""},c));salvar()}
-function garantirFicha(c){if(!S.analise.some(f=>f.card===c.id)){S.analise.unshift({id:uid(),card:c.id,titulo:c.titulo,formato:c.formato,data:c.data,views:"",likes:"",ncom:"",comentarios:[],insights:""});toast("Ficha criada na Análise")}}
+function garantirFicha(c){if(!S.analise.some(f=>f.card===c.id)){const h=(c.headlines||[]).find(x=>x.id===c.headline);S.analise.unshift({id:uid(),card:c.id,titulo:h?h.texto:c.titulo,formato:c.formato,fmtVisual:c.fmtCarrossel||"",data:c.data,views:"",shares:"",saves:"",likes:"",ncom:"",registros:[],comentarios:[],insights:""});toast("Ficha criada na Análise")}}
+async function copiar(txt){
+ try{await navigator.clipboard.writeText(txt);toast("Prompt copiado. É só colar no Claude.")}
+ catch(e){const t=document.createElement("textarea");t.value=txt;t.style.position="fixed";t.style.opacity="0";document.body.appendChild(t);t.select();let ok=false;try{ok=document.execCommand("copy")}catch(_){}t.remove();toast(ok?"Prompt copiado. É só colar no Claude.":"Não consegui copiar. Abra “Ver o prompt completo” e copie à mão.")}
+}
+document.addEventListener("toggle",e=>{const d=e.target.dataset&&e.target.dataset.det;if(!d)return;if(e.target.open)abertos.add(d);else abertos.delete(d)},true);
 
 document.addEventListener("click",e=>{
  const t=e.target.closest("button,[data-aula]");if(!t)return;
@@ -254,12 +317,18 @@ document.addEventListener("click",e=>{
  if(d.fase){faseSel=+d.fase;render();return}
  if(d.fmt){fmt=d.fmt;render();return}
  if(d.pauta){const p=PAUTAS.find(x=>x.id===d.pauta);paraEsteira({titulo:p.hook,formato:p.formato==="Carrossel"?"carrossel":"reels",pilar:"",pauta:p.id,aula:p.aula});toast("Foi pra esteira, em Ideia");render();return}
- if(d.mv){const c=S.esteira.find(x=>x.id===d.mv);const max=ETAPAS[c.formato].length-1;c.etapa=Math.min(max,Math.max(0,c.etapa+Number(d.d)));if(c.etapa===max)garantirFicha(c);salvar();render();return}
+ if(d.mv){const c=S.esteira.find(x=>x.id===d.mv);const max=ETAPAS[c.formato].length-1;const nova=Math.min(max,Math.max(0,c.etapa+Number(d.d)));
+  if(c.formato==="carrossel"&&c.etapa<ETAPA_POSTAGEM&&nova>=ETAPA_POSTAGEM&&nCheck(c)<8){const f=8-nCheck(c);abertos.add(c.id);render();toast((f===1?"Falta 1 item":"Faltam "+f+" itens")+" do checklist. Se um falhar, volta e arruma.");return}
+  c.etapa=nova;if(c.etapa===max)garantirFicha(c);salvar();render();return}
  if(d.delcard){S.esteira=S.esteira.filter(x=>x.id!==d.delcard);salvar();toast("Removido da esteira");render();return}
  if(d.delinsight){S.insights=S.insights.filter(x=>x.id!==d.delinsight);salvar();render();return}
  if(d.insightpauta){const i=S.insights.find(x=>x.id===d.insightpauta);paraEsteira({titulo:i.texto.slice(0,140),formato:"reels",pilar:"",aula:i.aula});toast("Virou ideia na esteira");render();return}
  if(d.delfonte){S.fontes=S.fontes.filter(x=>x.id!==d.delfonte);salvar();render();return}
  if(d.delpend){S.pendExtra=S.pendExtra.filter(x=>x.id!==d.delpend);salvar();render();return}
+ if(d.copiar){const I=d.copiar==="geral"?(S.prompt||{}):(S.esteira.find(x=>x.id===d.copiar).ins||{});copiar(promptCarrossel(I));return}
+ if(d.hesc){const[ci,h]=d.hesc.split("|");const c=S.esteira.find(x=>x.id===ci);c.headline=c.headline===h?"":h;salvar();render();return}
+ if(d.hdel){const[ci,h]=d.hdel.split("|");const c=S.esteira.find(x=>x.id===ci);c.headlines=(c.headlines||[]).filter(x=>x.id!==h);if(c.headline===h)c.headline="";salvar();render();return}
+ if(d.delreg){const[fi,r]=d.delreg.split("|");const f=S.analise.find(x=>x.id===fi);f.registros=(f.registros||[]).filter(x=>x.id!==r);salvar();render();return}
  if(d.delficha){S.analise=S.analise.filter(x=>x.id!==d.delficha);salvar();render();return}
  if(d.delcom){const[f,c]=d.delcom.split("|");const fi=S.analise.find(x=>x.id===f);fi.comentarios=fi.comentarios.filter(x=>x.id!==c);salvar();render();return}
  if(d.viraideia){const[f,c]=d.viraideia.split("|");const fi=S.analise.find(x=>x.id===f);const co=fi.comentarios.find(x=>x.id===c);paraEsteira({titulo:"Responder: "+co.texto.slice(0,120),formato:fi.formato,pilar:"",origem:"comentario"});toast("Virou ideia na esteira");return}
@@ -270,13 +339,17 @@ document.addEventListener("change",e=>{
  if(d.pend){S.pendDone[d.pend]=t.checked;salvar();render();return}
  if(d.cdata){const c=S.esteira.find(x=>x.id===d.cdata);c.data=t.value;salvar();render();return}
  if(d.ctag){const[f,c]=d.ctag.split("|");S.analise.find(x=>x.id===f).comentarios.find(x=>x.id===c).tag=t.value;salvar();render();return}
- if(d.fm&&t.type==="number"){render();return}
+ if(d.ccheck){const[ci,i]=d.ccheck.split("|");const c=S.esteira.find(x=>x.id===ci);c.check=c.check||{};c.check[i]=t.checked;salvar();render();return}
+ if(d.cfc){S.esteira.find(x=>x.id===d.cfc).fmtCarrossel=t.value;salvar();render();return}
+ if(d.fm&&(t.type==="number"||t.tagName==="SELECT")){render();return}
 });
 document.addEventListener("input",e=>{
  const t=e.target,d=t.dataset;
  if(d.cnotas){S.esteira.find(x=>x.id===d.cnotas).notas=t.value;salvar()}
  if(d.fm){S.analise.find(x=>x.id===d.fm)[d.k]=t.value;salvar()}
  if(d.canvas){S.canvas[d.canvas]=t.value;salvar()}
+ if(d.pr){const[pre,k]=d.pr.split("|");let alvo;if(pre==="pr"){S.prompt=S.prompt||{};alvo=S.prompt}else{const c=S.esteira.find(x=>"c"+x.id===pre);if(!c)return;c.ins=c.ins||{};alvo=c.ins}alvo[k]=t.value;salvar();
+  if(pre==="pr"){const pv=document.querySelector("pre.prompt");if(pv)pv.textContent=promptCarrossel(S.prompt)}}
 });
 document.addEventListener("submit",e=>{
  e.preventDefault();const f=e.target;if(f.id==="f-login")return;const v=id=>(document.getElementById(id)||{}).value||"";
@@ -284,6 +357,8 @@ document.addEventListener("submit",e=>{
  if(f.id==="f-fonte"){S.fontes.push({id:uid(),tipo:v("ff-tipo"),titulo:v("ff-titulo"),autor:v("ff-autor"),link:v("ff-link"),notas:v("ff-notas")});salvar();toast("Fonte adicionada");render()}
  if(f.id==="f-pend"){S.pendExtra.push({id:uid(),extra:true,texto:v("fp-texto"),aula:v("fp-aula"),ligado:""});salvar();toast("Pendência adicionada");render()}
  if(f.id==="f-ideia"){const fm=v("fn-fmt");paraEsteira({titulo:v("fn-titulo"),formato:fm,pilar:""});fmt=fm;toast("Ideia na esteira");render()}
+ if(f.dataset.fhead){const c=S.esteira.find(x=>x.id===f.dataset.fhead),tx=v("h-"+c.id).trim();if(!tx)return;c.headlines=c.headlines||[];const h={id:uid(),texto:tx};c.headlines.push(h);if(!c.headline)c.headline=h.id;abertos.add(c.id);salvar();render();const n=document.getElementById("h-"+c.id);if(n)n.focus();return}
+ if(f.dataset.freg){const fi=S.analise.find(x=>x.id===f.dataset.freg),dt=v("rd-"+fi.id),vw=v("rv-"+fi.id);if(!dt||vw==="")return;fi.registros=fi.registros||[];fi.registros.push({id:uid(),data:dt,views:vw});const ult=[...fi.registros].sort((a,b)=>a.data<b.data?-1:1).pop();fi.views=ult.views;salvar();toast("Registro guardado");render();return}
  if(f.dataset.fcom){const id=f.dataset.fcom,tx=v("nc-"+id).trim();if(!tx)return;S.analise.find(x=>x.id===id).comentarios.push({id:uid(),texto:tx,tag:v("nt-"+id)});salvar();render()}
 });
 

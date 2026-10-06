@@ -209,8 +209,123 @@ DEFINIR PROBLEMAAAAA
 
 (aqui podemos usar esses 6 passos pro nosso trabalho: pedir pro Claude criar uma série de slides em cima disso, que aí vou trabalhando junto com o grupo)`,
  arquivos:["Aula_3_-_Mapa_da_estratégia.pdf (anotações e transcrição)","Resumo_Aula3_Mapa_de_Estrategia.pdf","Pautas_Aula3_Instagram.pdf"]
+},
+{
+ id:"aula-carrossel", curso:"alana", rotulo:"Carrossel", n:1, titulo:"Carrossel Magnético", nomeCompleto:"Carrossel Magnético", prof:"Alana Miranda", data:"6 de outubro de 2026",
+ tese:"Conteúdo é uma opinião dita em voz alta todos os dias. Posicionamento é ter coragem de repetir.",
+ ferramenta:"carrossel",
+ pontos:[
+  "Conteúdo é ativo, não hobby. Ativo é o que ativa compra, cliente, emoção e indicação. Nada grande se cria com o tempo que sobra.",
+  "Posicionamento não mora no digital, mora na cabeça das pessoas. O digital só leva a mensagem, e marca é mensagem repetida.",
+  "A receita tem ordem: pauta, headline, carrossel. A headline é a parte mais importante: sem ela ninguém passa do primeiro card.",
+  "Informação qualquer IA entrega. O que performa é informação com a sua opinião dentro.",
+  "Curtida é a reação mais barata. Compartilhamento e salvamento dizem mais, e carrossel cresce por semanas.",
+  "Deu certo, repete o formato e troca o tema. A IA lapida, mas a ideia e o repertório têm que ser seus."
+ ],
+ resumo:`
+ <section><h3><span class="ast">✱</span>Conteúdo não é hobby</h3>
+  <p>A abertura foi uma provocação: tratar conteúdo como coisa que se faz quando der tempo, depois do cabelo, da unha, de o microfone chegar, é garantir que ele nunca vai acontecer. E conteúdo feito assim não devolve o que poderia.</p>
+  <p>Conteúdo é <b>ativo</b>: o que ativa compra, cliente, emoção, prospecção e indicação. Tratar como ativo é reservar agenda para consumir, pensar, fotografar e escrever, e não só para postar.</p>
+  <p>A Alana não é formada em marketing. É arquiteta, com pós em arquitetura de varejo, e produz conteúdo desde 2019. Chegou onde está por repetição e constância, como qualquer especialista chega na própria área.</p>
+  <p class="citacao">Nada grande se cria dedicando só o tempo que sobra.</p>
+ </section>
+ <section><h3><span class="ast">✱</span>Posicionamento é repetição</h3>
+  <p>Marca se constrói com contatos repetidos. As grandes marcas repetem a mesma mensagem de muitas formas, e é isso que cria lembrança.</p>
+  <p>Posicionamento não se constrói no digital: o digital é o meio. Posicionamento é a opinião que o outro tem sobre você, a sua reputação na cabeça dele. Por isso a mensagem precisa ser coerente, verdadeira e repetida.</p>
+  <p class="citacao">O que você teria coragem de dizer em voz alta todos os dias, pelo resto da vida?</p>
+  <p class="muted">Falar uma coisa hoje e o contrário amanhã quebra a coerência. E a objeção “mas eu vou ser repetitiva?” tem resposta curta: vai, e precisa.</p>
+ </section>
+ <section><h3><span class="ast">✱</span>Coragem é uma escolha diária</h3>
+  <p>A frase que ela levou da mentoria com a Amanda Holzer: coragem não é traço de personalidade, é escolha diária. Funciona como musculação: quanto mais se exercita, menos a crítica dói.</p>
+  <p>Provocar não é ofender. Quando as pessoas discordam, o conteúdo está fazendo o trabalho dele. O filtro dela para uma headline polêmica: eu diria isso numa mesa de bar? Se sim, pode ir. Se só vai postar para viralizar e amanhã vai ter vergonha, não vai.</p>
+  <p class="muted">Exemplo dela: uma headline sobre desculpas e produção de conteúdo gerou cancelamento nos comentários e trouxe cerca de 700 seguidores donos de negócio, exatamente o público que ela queria atrair.</p>
+ </section>
+ <section><h3><span class="ast">✱</span>Atenção, curiosidade, entretenimento</h3>
+  <p>As três etapas para alguém consumir o seu conteúdo. Primeiro mexer com a pessoa, depois despertar a curiosidade, depois entreter. Tudo isso acontece nos 5 segundos do gancho de um Reels ou numa headline forte de carrossel.</p>
+ </section>
+ <section><h3><span class="ast">✱</span>A receita do carrossel</h3>
+  <p>Como fazer bolo: uma etapa depois da outra, sem inverter a ordem.</p>
+  <div class="formula"><div><b>1. Pauta</b>O tema, escolhido dentro do seu editorial.</div><span class="op">›</span><div><b>2. Headline</b>A capa. A parte mais importante.</div><span class="op">›</span><div><b>3. Carrossel</b>Desmembrar a conversa em cards.</div></div>
+  <p>Os editoriais dela são poucos e fixos: branding, empreendedorismo, maternidade, produção de conteúdo e treinos, que entram como símbolo de disciplina. A pauta sai de dentro deles.</p>
+  <p>Por dentro: a capa chama atenção; depois vem o que aconteceu, que gera curiosidade; o entretenimento; e no meio de tudo, o que ela acha. O último card volta à headline para fechar o loop na cabeça de quem leu. Como um filme, o carrossel sobe e desce para segurar a pessoa até o fim.</p>
+  <p class="muted">Às vezes ela troca a headline depois de desmembrar o carrossel. Já ficou 3 ou 4 dias com um carrossel parado lapidando a capa.</p>
+ </section>
+ <section><h3><span class="ast">✱</span>A headline</h3>
+  <ul><li><b>Curta:</b> uma linha. Chegar nela é difícil, e aí a IA ajuda muito.</li><li><b>Palavra forte:</b> vergonha, cafonice, pobre, rico, indignado, confronto, arrasada.</li><li><b>Coerente:</b> dentro do que você repete em voz alta e sustentaria para sempre. Marca não é roupa que se tira.</li></ul>
+  <p class="muted">Exercício que ela fazia antes de usar IA: escrever cem frases diferentes sobre a mesma coisa. Sem esse treino, nem dá para saber o que pedir para a IA.</p>
+ </section>
+ <section><h3><span class="ast">✱</span>Informativo não basta, precisa ser opinativo</h3>
+  <p>Qualquer informação hoje se encontra numa IA. O que diferencia é a sua opinião dentro da informação. Repare: quase todo conteúdo que performa bem tem a opinião de alguém.</p>
+  <p>O exemplo da aula foi um case da BYD (a transcrição escreveu “BID”): o vice-presidente da marca no Brasil passou uma hora sentado diante de 30 pessoas que odeiam a marca, ouvindo sem rebater. A mesma pauta, com os mesmos fatos, em duas versões:</p>
+  <div class="tabwrap"><table><thead><tr><th>Versão IA ou agência</th><th>Versão dela</th></tr></thead><tbody>
+   <tr><td>Título de case: como transformar críticas em oportunidade.</td><td>Pauta “perfeição é a nova cafonice”, com o case como pauta quente.</td></tr>
+   <tr><td>Relata o que aconteceu.</td><td>Conta o que aconteceu e no meio diz o que acha, conversando com quem lê.</td></tr>
+   <tr><td>Fecha com “gostou? salve este post”.</td><td>Fecha voltando à ideia da capa.</td></tr>
+  </tbody></table></div>
+  <p>Rede social nasceu para socializar. A gente não entra no Instagram para aprender nem para comprar, entra para se entreter. A venda é consequência da conversa.</p>
+ </section>
+ <section><h3><span class="ast">✱</span>Pauta quente</h3>
+  <p>O assunto do dia ou da semana. Muda a entrega de qualquer formato. Todos os carrosséis dela acima de 5 milhões de visualizações vieram de pauta quente, num perfil de cerca de 20 mil seguidores. Quando aparece uma, ela para o que está fazendo e produz.</p>
+  <p>Todo dia tem pauta quente, ou pelo menos toda semana. Os exemplos da aula: futebol, eleição (os deputados mais votados têm redes muito bem construídas) e a maratona de Chicago para quem fala de treino. Ela tem uma IA agendada que manda 10 pautas por dia para a categoria dela.</p>
+  <p class="aviso">Você decidiu segurar a pauta quente diária até fechar a estratégia do perfil.</p>
+ </section>
+ <section><h3><span class="ast">✱</span>O que medir</h3>
+  <p>O carrossel do case BYD teve 120 mil visualizações, bem menos que os virais dela, mas trouxe o contato direto de um executivo da marca e uma negociação como creator. Para ela, esse valeu mais.</p>
+  <ul><li><b>Curtida</b> é a reação mais barata que existe.</li><li><b>Compartilhar</b> é a pessoa colocar o nome dela no seu conteúdo: isso me representa.</li><li><b>Alcance</b> é ótimo, mas é métrica de vaidade. Marca mora na relevância.</li></ul>
+  <p><b>Carrossel cresce por dias.</b> Um dos dela foi de 470 mil para 1 milhão em cerca de três semanas. O de uma cliente saiu com 4 a 5 mil e chegou a 180 mil em 30 dias. O Reels concentra a entrega nos primeiros 3 dias. Não desista de um carrossel que começou devagar.</p>
+ </section>
+ <section><h3><span class="ast">✱</span>Repetir o que funciona</h3>
+  <p>Deu certo, repete. Ela troca o tema e mantém o formato. Os formatos dela que viraram marca: <b>tela dividida</b>, <b>headline grandona</b> e o <b>carrossel de texto feito dentro do próprio Instagram</b>, que segundo ela tem sido mais entregue que os feitos fora da plataforma.</p>
+  <p>Roubar como artista: manter o formato e a ideia central do que funcionou, recriado no seu tom de voz, editorial, identidade visual e opinião. Os insights são o mapa do que repetir.</p>
+  <p class="muted">E um teste incômodo: você tem orgulho do seu conteúdo? Entraria no seu perfil para consumir? Se nem você gosta, o outro não é obrigado a gostar.</p>
+ </section>
+ <section><h3><span class="ast">✱</span>A IA lapida, a ideia é sua</h3>
+  <p>Ela chega na IA com a ideia pronta e a IA ajuda a decupar. A IA não convive com você, não atende os seus clientes, não está no seu WhatsApp: ela produz melhor quanto mais insumo você der.</p>
+  <p>O dono é responsável pelo próprio conteúdo. A história do amigo que pagava agência e viu o aniversário dele postado no dia errado: a culpa, segundo ela, é de quem não participa da cocriação. Por isso a equipe dela escreve, o cliente lapida e o próprio cliente posta.</p>
+ </section>
+ <section><h3><span class="ast">✱</span>Os dois métodos do prompt</h3>
+  <ul><li><b>Branding com Conteúdo (Alana Miranda):</b> carrossel é uma opinião dita em voz alta, em quatro partes: pauta, headline, como eu contaria e IA.</li><li><b>Alta Ativação (Amanda Holzer):</b> palavras fortes e emoções de média ou alta ativação, como raiva, indignação, vergonha, FOMO e surpresa. Nunca as mornas, como calma, gratidão ou inspiração.</li></ul>
+  <p>O prompt pede quatro insumos seus e proíbe a IA de reescrever com as palavras dela: sem imperativo, sem “é sobre isso”, sem “no fim das contas”, sem travessão, sem pergunta retórica. O montador está na ferramenta desta aula.</p>
+  <p class="citacao">Perfeição virou o novo cafona. Coragem virou o novo luxo.</p>
+ </section>`,
+ anotacoes:"",
+ arquivos:["Transcrição da aula (texto corrido)","Resumo da aula","Print do slide do checklist do carrossel magnético","Carrossel_Magnetico__Next_Level_.pdf (checklist e prompt)","A aula não foi gravada: a Alana ficou de regravar"]
 }
 ];
+const CURSOS = [
+ {id:"bootcamp",tipo:"Curso",nome:"Bootcamp de Estratégia 2026.3",sub:"Miami Ad School"},
+ {id:"alana",tipo:"Workshop",nome:"Branding com Conteúdo",sub:"Alana Miranda"}
+];
+const cursoDe=a=>CURSOS.find(c=>c.id===(a.curso||"bootcamp"));
+const rotAula=a=>a.rotulo||("Aula "+a.n);
+
+/* ---------------- carrossel magnético ---------------- */
+const CHECK_CARROSSEL = [
+ "Pauta quente? A pauta junta um fato com uma opinião minha?",
+ "A headline cabe em uma linha e tem uma palavra forte?",
+ "Eu diria essa headline em voz alta sem vergonha?",
+ "Dá pra ver a ordem: o que aconteceu, o que eu acho, o que tem a ver com a minha marca?",
+ "Cada card cabe em uma respiração?",
+ "O último card repete a ideia da headline?",
+ "A legenda continua a conversa em vez de repetir o carrossel?",
+ "Tudo que está ali eu sustento em público?"
+];
+const FORMATOS_CARROSSEL = ["Tela dividida","Headline grandona","Texto nativo do Instagram","Outro"];
+function promptCarrossel(i){
+ const v=(x,ph)=>(x&&String(x).trim())||ph;
+ return `Você é um especialista em copy para Instagram e trabalha com dois métodos: o Branding com Conteúdo®, da Alana Miranda (@alanamiranda), onde carrossel é uma opinião dita em voz alta, estruturada em quatro partes: pauta, headline, como eu contaria e IA; e o Método da Alta Ativação, da Amanda Holzer, com palavras fortes e emoções de média ou alta ativação (raiva, indignação, vergonha, FOMO, surpresa), nunca emoções mornas como calma, gratidão ou inspiração. Você escreve a partir do que eu já decidi, sem inventar por cima, e soa como uma pessoa falando, nunca como uma marca ou um coach.
+
+Minha pauta é ${v(i.pauta,"[fato + o que eu acho disso]")}. Minha ideia de headline é ${v(i.headline,"[uma linha]")}. Do jeito que eu contaria isso pra uma amiga: ${v(i.conversa,"[escreve corrido, sem se preocupar com cards]")}.
+Meu público é ${v(i.publico,"[quem]")}.
+
+O que eu quero de você:
+1. Pega a minha ideia de headline e devolve 3 versões com uma palavra forte cada, mantendo o que eu quis dizer. Eu escolho.
+2. Organiza a minha conversa em até 10 cards, cortando onde eu tomaria fôlego, nessa ordem: o que aconteceu, o que eu acho disso, o que isso tem a ver com quem lê.
+3. O último card reforça a headline, dita de um jeito que a pessoa queira repetir pra alguém.
+4. Escreve uma legenda que continua a conversa em vez de resumir o carrossel, fechando com uma pergunta específica pra esse público.
+
+Regra principal: mantém o máximo das minhas palavras. Seu trabalho é estruturar o que eu escrevi de forma persuasiva e encaixar palavras fortes no meio, não reescrever com as suas. Sem imperativo, sem "é sobre isso", sem "no fim das contas", sem travessão, sem pergunta retórica. Se alguma frase soar como IA, reescreve antes de me mostrar.`;
+}
 
 /* ---------------- pautas ---------------- */
 const PAUTAS = [
@@ -304,7 +419,8 @@ const FERRAMENTAS = [
  {id:"radar",aula:"aula-2",nome:"Radar de Habilidades",desc:"Em que fase do projeto eu estou e quais habilidades e perguntas precisam brilhar agora."},
  {id:"seispassos",aula:"aula-3",nome:"Canvas de 6 passos",desc:"Do ponto A ao B em seis caixas para preencher, com o exemplo do Nike Run Club SP."},
  {id:"hhh",aula:"aula-3",nome:"Hero, Hub, Help",desc:"Organizar um portfólio de conteúdo pelo papel de cada peça."},
- {id:"pmg",aula:"aula-3",nome:"P, M e G",desc:"Dimensionar o tamanho de um trabalho para negociar prazo."}
+ {id:"pmg",aula:"aula-3",nome:"P, M e G",desc:"Dimensionar o tamanho de um trabalho para negociar prazo."},
+ {id:"carrossel",aula:"aula-carrossel",nome:"Carrossel Magnético",desc:"O checklist de 8 itens antes de publicar e o montador do prompt com os seus quatro insumos."}
 ];
 const PEND_BASE = [
  {id:"p1",aula:"aula-2",texto:"Trazer a frase do dia 16/09 sobre excesso de informação (texto e autor)",ligado:"Pauta “A gente não precisa de mais informação”"},
@@ -313,7 +429,11 @@ const PEND_BASE = [
  {id:"p4",aula:"aula-2",texto:"Entender o que é Facilitação (de Integração e Facilitação), não explicada em aula",ligado:""},
  {id:"p5",aula:"aula-3",texto:"Confirmar com a professora a nomenclatura do P, M e G",ligado:"Pauta “Nem todo job cabe no mesmo prazo”"},
  {id:"p6",aula:"aula-3",texto:"Pegar o link de referência do Hero, Hub, Help que a professora ia mandar",ligado:""},
- {id:"p7",aula:"aula-3",texto:"Montar os slides do trabalho em grupo com os 6 passos quando chegar o briefing final",ligado:""}
+ {id:"p7",aula:"aula-3",texto:"Montar os slides do trabalho em grupo com os 6 passos quando chegar o briefing final",ligado:""},
+ {id:"p8",aula:"aula-carrossel",texto:"Mergulho: o que eu teria coragem de dizer em voz alta todos os dias?",ligado:"Meu Perfil › Estratégia"},
+ {id:"p9",aula:"aula-carrossel",texto:"Levantar nos insights quais formatos de carrossel e reels mais performaram no meu perfil",ligado:"Meu Perfil › Análise"},
+ {id:"p10",aula:"aula-carrossel",texto:"Rever a aula quando a Alana mandar a regravação",ligado:""},
+ {id:"p11",aula:"aula-carrossel",texto:"Retomar a pauta quente diária depois de fechar a estratégia",ligado:""}
 ];
 const ETAPAS = {reels:["Ideia","Texto","Gravação","Edição","Postagem","Análise"],carrossel:["Ideia","Texto","Design","Postagem","Análise"]};
 const TAGS = ["Pergunta","Identificação","Discordância","Pedido de conteúdo","Relato pessoal"];
