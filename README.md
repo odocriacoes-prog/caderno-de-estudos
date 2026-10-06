@@ -15,7 +15,6 @@ Site estático (HTML, CSS e JS, sem build) publicado no Netlify, com dados no Su
 ## Colocar no ar
 1. Rodar `schema.sql` no SQL Editor do Supabase.
 2. Preencher `config.js`.
-3. No Supabase, em Authentication › URL Configuration, adicionar o endereço do Netlify em Redirect URLs.
-4. No Netlify, Add new site › Import from GitHub › este repositório. Sem comando de build; pasta de publicação: raiz.
+3. No Netlify, Add new site › Import from GitHub › este repositório. Sem comando de build; pasta de publicação: raiz.
 
-O login não cria usuários novos: só entra quem já existe no Supabase.
+O caderno abre sem login. Os dados ficam na linha `lidi` da tabela `estudo_aberto`; enquanto a tabela não existir, ficam guardados só no navegador.

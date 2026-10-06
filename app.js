@@ -9,19 +9,9 @@ function semente(){
    insights:"Gancho em primeira pessoa segurou bem. Testar a mesma estrutura em carrossel."}],
   insights:[],pendDone:{},pendExtra:[],fontes:[],canvas:{},tab:{}};
 }
-let S=null, sb=null, usuario=null, salvando=null;
+let S=null, sb=null, salvando=null;
 const CFG=window.CADERNO_CONFIG||{};
 const temConfig=!!(CFG.supabaseUrl&&CFG.supabaseAnonKey&&!CFG.supabaseUrl.includes("COLE"));
-function salvar(){
- if(!usuario||!S) return;
- clearTimeout(salvando);
- salvando=setTimeout(async()=>{
-  const {error}=await sb.from("estudo_estado").upsert({owner:usuario.id,dados:S,atualizado:new Date().toISOString()});
-  salvando=null;
-  if(error) toast("Não consegui salvar. Confira a internet e tente de novo.");
- },700);
-}
-
 const esc=s=>String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 const aulaDe=id=>AULAS.find(a=>a.id===id);
 let toastT;
@@ -352,7 +342,7 @@ document.addEventListener("input",e=>{
   if(pre==="pr"){const pv=document.querySelector("pre.prompt");if(pv)pv.textContent=promptCarrossel(S.prompt)}}
 });
 document.addEventListener("submit",e=>{
- e.preventDefault();const f=e.target;if(f.id==="f-login")return;const v=id=>(document.getElementById(id)||{}).value||"";
+ e.preventDefault();const f=e.target;const v=id=>(document.getElementById(id)||{}).value||"";
  if(f.id==="f-insight"){const tx=v("fi-texto").trim();if(!tx)return;S.insights.push({id:uid(),aula:f.dataset.insaula,texto:tx,odo:document.getElementById("fi-odo").checked,perfil:document.getElementById("fi-perfil").checked,data:v("fi-data")});salvar();toast("Insight salvo");render()}
  if(f.id==="f-fonte"){S.fontes.push({id:uid(),tipo:v("ff-tipo"),titulo:v("ff-titulo"),autor:v("ff-autor"),link:v("ff-link"),notas:v("ff-notas")});salvar();toast("Fonte adicionada");render()}
  if(f.id==="f-pend"){S.pendExtra.push({id:uid(),extra:true,texto:v("fp-texto"),aula:v("fp-aula"),ligado:""});salvar();toast("Pendência adicionada");render()}
@@ -363,51 +353,49 @@ document.addEventListener("submit",e=>{
 });
 
 
-/* ---------------- conexão e login ---------------- */
-function tela(html){document.body.classList.add("deslogado");document.getElementById("main").innerHTML=`<div class="entrada">${html}</div>`}
-function telaLogin(msg){
- tela(`<div class="cartao form"><span class="selo grande" aria-hidden="true">✱</span><h1>Caderno de Estudos</h1><p class="muted">Entre com o seu e-mail. Mandamos um link de acesso, sem senha.</p>
-  <form id="f-login" class="form"><div class="campo"><label for="lg-email">E-mail</label><input type="email" id="lg-email" required autocomplete="email"></div><div><button class="btn pri" type="submit">Mandar link de acesso</button></div></form>
-  ${msg?`<p class="aviso">${esc(msg)}</p>`:""}</div>`);
+/* ---------------- conexão (sem login) ----------------
+   O caderno abre direto. Os dados ficam numa linha fixa da tabela estudo_aberto no Supabase
+   (ver schema.sql). Se a tabela ainda não existir, guarda neste navegador até ela ser criada. */
+const LINHA="lidi", CHAVE_LOCAL="caderno-estado";
+let modoLocal=false;
+function lerLocal(){try{return JSON.parse(localStorage.getItem(CHAVE_LOCAL)||"null")}catch(e){return null}}
+function gravarLocal(){try{localStorage.setItem(CHAVE_LOCAL,JSON.stringify(S))}catch(e){}}
+function salvar(){
+ if(!S) return;
+ gravarLocal();
+ if(modoLocal||!sb) return;
+ clearTimeout(salvando);
+ salvando=setTimeout(async()=>{
+  const {error}=await sb.from("estudo_aberto").upsert({id:LINHA,dados:S,atualizado:new Date().toISOString()});
+  salvando=null;
+  if(error) toast("Não consegui salvar na nuvem. Ficou guardado neste aparelho.");
+ },700);
 }
-function telaErro(m){tela(`<div class="cartao"><h2>Não consegui abrir o Caderno</h2><p class="muted">${esc(m)}</p></div>`)}
-async function carregar(){
- tela(`<p class="muted">Abrindo o seu caderno…</p>`);
- const {data,error}=await sb.from("estudo_estado").select("dados").eq("owner",usuario.id).maybeSingle();
- if(error){telaErro("O banco respondeu: "+error.message);return}
- S=(data&&data.dados&&data.dados.esteira)?data.dados:semente();
+function tela(html){document.body.classList.add("deslogado");document.getElementById("main").innerHTML=`<div class="entrada">${html}</div>`}
+function abrir(dados){
+ S=(dados&&dados.esteira)?dados:(lerLocal()||semente());
  if(!S.tab)S.tab={};
  document.body.classList.remove("deslogado");
- document.getElementById("quem").textContent=usuario.email;
- if(!data) salvar();
+ document.getElementById("quem").textContent=modoLocal?"Salvando só neste aparelho":"Salvo na nuvem";
  lerHash();render();
 }
+async function carregar(){
+ tela(`<p class="muted">Abrindo o seu caderno…</p>`);
+ if(!sb){modoLocal=true;abrir(null);return}
+ const {data,error}=await sb.from("estudo_aberto").select("dados").eq("id",LINHA).maybeSingle();
+ if(error){modoLocal=true;abrir(null);toast("Salvando só neste aparelho até a tabela do Supabase ser criada.");return}
+ const local=lerLocal();
+ abrir(data&&data.dados&&data.dados.esteira?data.dados:local);
+ if(!data) salvar();
+}
 async function recarregar(){
- if(!usuario||salvando) return;
- const {data}=await sb.from("estudo_estado").select("dados").eq("owner",usuario.id).maybeSingle();
- if(data&&data.dados&&data.dados.esteira&&!salvando){S=data.dados;if(!S.tab)S.tab={};render()}
+ if(modoLocal||!sb||salvando) return;
+ const {data}=await sb.from("estudo_aberto").select("dados").eq("id",LINHA).maybeSingle();
+ if(data&&data.dados&&data.dados.esteira&&!salvando){S=data.dados;if(!S.tab)S.tab={};gravarLocal();render()}
 }
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")recarregar()});
-document.addEventListener("submit",async e=>{
- if(e.target.id!=="f-login")return;
- const email=document.getElementById("lg-email").value.trim();
- const {error}=await sb.auth.signInWithOtp({email,options:{shouldCreateUser:false,emailRedirectTo:location.origin+location.pathname}});
- let msg="Link enviado para "+email+". Abra o e-mail neste aparelho e toque no link.";
- if(error){const m=(error.message||"").toLowerCase();
-  msg=(m.includes("signup")||m.includes("not found")||m.includes("not allowed"))?"Esse e-mail ainda não tem usuário no Supabase. Crie o usuário em Authentication › Users e tente de novo.":
-   (m.includes("rate")||m.includes("security purposes"))?"Muitos pedidos seguidos. Espere um minuto e tente de novo.":"Não consegui mandar o link. O Supabase respondeu: "+error.message;}
- telaLogin(msg);
-});
-document.getElementById("sair").addEventListener("click",async()=>{await sb.auth.signOut()});
-async function iniciar(){
- if(!temConfig){telaErro("Falta preencher o endereço e a chave do Supabase no arquivo config.js.");return}
- sb=window.supabase.createClient(CFG.supabaseUrl,CFG.supabaseAnonKey);
- sb.auth.onAuthStateChange((ev,sess)=>{
-  if(sess&&!usuario){usuario=sess.user;carregar()}
-  if(ev==="SIGNED_OUT"){usuario=null;S=null;telaLogin()}
- });
- const {data:{session}}=await sb.auth.getSession();
- if(session&&!usuario){usuario=session.user;carregar()}
- else if(!session) telaLogin();
+function iniciar(){
+ if(temConfig&&window.supabase) sb=window.supabase.createClient(CFG.supabaseUrl,CFG.supabaseAnonKey,{auth:{persistSession:false}});
+ carregar();
 }
 iniciar();
