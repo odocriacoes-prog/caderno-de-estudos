@@ -438,3 +438,75 @@ const PEND_BASE = [
 const ETAPAS = {reels:["Ideia","Texto","Gravação","Edição","Postagem","Análise"],carrossel:["Ideia","Texto","Design","Postagem","Análise"]};
 const TAGS = ["Pergunta","Identificação","Discordância","Pedido de conteúdo","Relato pessoal"];
 
+
+/* Estratégia do perfil pessoal. Versão 1, fechada em 28/10/2026. */
+const ESTRATEGIA = {
+ versao:"Versão 1 · fechada em 28 de outubro de 2026",
+ posicionamento:{
+  eixo:"Estrategista de real time pra eventos",
+  longa:"Sou a Lidi, estrategista de real time e sócia da ÔDO. Saí da psicologia no interior de Minas pra planejar e cobrir eventos de marcas como Mercado Livre, Wellhub e 99. Acredito que estratégia de evento começa entendendo gente, não planilha, e que conteúdo bom de evento é o que não parece feito por marca.",
+  nome:"lidi furlan | estratégia real time",
+  bio:["estratégia • real time • eventos","e uns bastidores de quem tem produtora 🎬","sócia & estrategista na @ôdo"],
+  gaveta:"Guardada pra quando o posicionamento estiver mais forte: “me separei da psicologia e casei com a estratégia. mas ainda penso nela todo dia 🙃” (ou a versão “divorciada da psicologia, em relação tóxica com a estratégia”)."
+ },
+ ancoras:[
+  "Conteúdo de evento com cara de “produzido por marca” já nasceu perdendo.",
+  "Orgânico, no cenário certo, vale mais que craft.",
+  "O quê, pra quem, com qual objetivo. Isso muda tudo.",
+  "Ser cara de pau não é ter relação por interesse: é escolher as relações que constroem o futuro que você quer.",
+  "Estratégia não mora só em livro e número. Mora no comportamento de quem consome."
+ ],
+ publico:{
+  principal:"Quem está no evento e quer parar de só executar pra começar a pensar.",
+  grupos:[["Creators","que querem entregar melhor pras marcas"],["Videomakers","que querem entender o porquê do que gravam"],["Estrategistas","que querem dominar real time de evento"]],
+  secundario:"Marcas e agências que me encontram pelo caminho.",
+  atencao:"São três níveis de maturidade. O que une é a vontade de sair do “eu executo” pro “eu penso”, e isso pode virar a estrutura do curso (módulos por nível)."
+ },
+ promessa:"Aqui você aprende a pensar evento e real time antes de produzir.",
+ pilares:[
+  {nome:"Estratégia real time",sobre:"O pensar antes de produzir. O quê, pra quem, com qual objetivo; orgânico x craft.",papel:"autoridade"},
+  {nome:"Comportamento",sobre:"A psicologia aplicada. Entender quem consome, o quali que número nenhum mostra.",papel:"autoridade"},
+  {nome:"Negócio criativo",sobre:"Os bastidores da ÔDO. Orçamento, margem, sócias, cara de pau e relações.",papel:"humanidade"},
+  {nome:"Vida real time",sobre:"Rotina, casamento, estudos e os sistemas que eu monto com o Claude.",papel:"humanidade"}
+ ],
+ editorias:[
+  {nome:"Antes de produzir",pilar:"Estratégia real time",sobre:"Um evento real desmontado: como foi planejado e por quê.",base:true},
+  {nome:"O quê, pra quem, pra quê",pilar:"Estratégia real time",sobre:"Um briefing ou situação destrinchada com as três perguntas."},
+  {nome:"Real time em 1 minuto",pilar:"Estratégia real time",sobre:"Formato curto, uma dica de real time por post.",base:true},
+  {nome:"Cabeça de quem consome",pilar:"Comportamento",sobre:"Um comportamento explicado pela psicologia."},
+  {nome:"Isso não tá no reels",pilar:"Comportamento",sobre:"O aprendizado que só o livro tinha. Pode circular por todos os pilares."},
+  {nome:"Bastidores da ÔDO",pilar:"Negócio criativo",sobre:"Perrengue, decisão de sócia, orçamento que quase deu errado."},
+  {nome:"Meus sistemas",pilar:"Vida real time",sobre:"Como eu organizo vida e negócio com o Claude."},
+  {nome:"Diário real time",pilar:"Vida real time",sobre:"Vida, rotina, casamento, sem filtro de estrategista.",base:true}
+ ],
+ ritmo:"Base fixa: Antes de produzir, Real time em 1 minuto e Diário real time (autoridade, utilidade e humanidade). As outras entram em rodízio.",
+ naoFalo:[
+  "Valores e detalhes de cliente, e nada que exponha marca ou agência parceira",
+  "Bastidor que queime alguém: os perrengues entram, os culpados não",
+  "Assuntos internos de sociedade que não são só meus",
+  "Fórmula de viralizar e hack de algoritmo: eu ensino a pensar, não truque",
+  "Falar mal de colega ou concorrente pra ganhar engajamento"
+ ],
+ tom:[
+  ["leve e autoirônico, rindo do caos do evento e da própria trajetória","piadinha pronta ou meme forçado"],
+  ["amiga que manja muito","professora dando aula"],
+  ["opinião com posição (as âncoras)","“depende” em cima do muro"],
+  ["simples: “antes de produzir”","jargão: “REC”, “insights disruptivos”"],
+  ["bastidor real, com perrengue","vida perfeita de estrategista"]
+ ],
+ jeito:"Falo “mano”, “oie oie”, “cara” e “kkk”. Não são bordões, é o meu jeito natural, e entram na legenda sem forçar.",
+ banidas:["REC"],
+ funil:[
+  {etapa:"Atrair",funcao:"ser descoberta, ser compartilhada",onde:"Real time em 1 minuto · Cabeça de quem consome · Isso não tá no reels · Diário real time"},
+  {etapa:"Confiar",funcao:"mostrar que eu sei e faço",onde:"Antes de produzir · O quê, pra quem, pra quê · Bastidores da ÔDO · Meus sistemas"},
+  {etapa:"Converter",funcao:"levar pra algo meu",onde:"lista de espera do curso, material gratuito, convites nos stories"}
+ ],
+ monetizacao:[
+  ["Curso de planejamento real time (2027)","O produto principal, produzido com a Kaly e o Nick depois da Miami."],
+  ["Até lá, validar","Isca gratuita (tipo um checklist “antes de produzir”) pra montar lista, aula aberta ou live pra testar o tema e, se quiser, um workshop pequeno e pago pra gerar depoimentos."],
+  ["Marcas e agências → ÔDO","Secundário: acontece pelo @ na bio e pelos cases do Antes de produzir."],
+  ["Eventuais","Palestras, mentoria pra quem quer virar negócio criativo e parcerias com ferramentas que eu uso de verdade."]
+ ],
+ pesquisa:"De agora até o curso, o perfil é minha pesquisa de mercado. Os comentários guardados na Análise mostram as dúvidas reais do público, e cada dúvida que se repete vira módulo do curso.",
+ fixado:{titulo:"Da faculdade de psicologia no interior de Minas pra Wellhub, Mercado Livre e 99",sobre:"Apresenta quem eu sou, prova o posicionamento e carrega a âncora da cara de pau. Primeiro post da nova fase; a piada da psicologia pode abrir o texto."}
+};

@@ -192,10 +192,34 @@ function vPendencias(){
 }
 
 function vEstrategia(){
- const blocos=["Posicionamento: quem eu sou aqui, como dona da ÔDO e estrategista","Opiniões-âncora: o que eu repetiria pelo resto da vida","Público","Promessa do perfil","Pilares","Editorias","O que eu não falo","Tom de voz","Funil e monetização"];
- return `<div class="ler"><div class="cab"><span class="label" style="color:var(--bleu-tinta)"><span class="ast">✱</span>Meu Perfil · Estratégia</span><h1>A estratégia do meu perfil</h1><p class="aviso">Em branco de propósito. Você vai repensar a estratégia falando como dona da ÔDO e estrategista, e a gente preenche quando estiver definida.</p>
-  <div class="pontos" style="background:var(--bleu-fundo)"><span class="label" style="color:var(--bleu-tinta)">Pergunta de partida</span><p class="gancho">O que eu teria coragem de dizer em voz alta todos os dias, pelo resto da vida?</p><p class="muted" style="font-size:14px">Da aula Carrossel Magnético, com a Alana Miranda. Conteúdo é opinião dita em voz alta; posicionamento é a coragem de repetir.</p></div></div>
- <div style="display:grid;gap:10px">${blocos.map(b=>`<div class="cartao" style="border-top:4px solid var(--bleu)"><h3>${b}</h3><p class="muted" style="font-size:14px">A definir.</p></div>`).join("")}</div></div>`;
+ const E=ESTRATEGIA, borda='style="border-top:4px solid var(--bleu)"';
+ const bloco=(titulo,corpo)=>`<section class="cartao" ${borda}><h3>${titulo}</h3>${corpo}</section>`;
+ const lista=arr=>`<div class="pontos" style="background:var(--bleu-fundo)"><ul>${arr.map(t=>`<li><span>${esc(t)}</span></li>`).join("")}</ul></div>`;
+ const P=E.posicionamento;
+ return `<div class="ler"><div class="cab"><span class="label" style="color:var(--bleu-tinta)"><span class="ast">✱</span>Meu Perfil · Estratégia</span><h1>A estratégia do meu perfil</h1><p class="aviso">${esc(E.versao)}. Vai evoluir com o tempo e com o que os comentários mostrarem.</p>
+  <p class="tese">${esc(P.eixo)}</p></div>
+ <div style="display:grid;gap:14px">
+ ${bloco("Posicionamento",`<p>${esc(P.longa)}</p>
+  <div class="duas"><div><span class="label">Nome no perfil</span><p style="margin:4px 0 0;font-weight:600">${esc(P.nome)}</p></div><div><span class="label">Bio</span><p style="margin:4px 0 0">${P.bio.map(esc).join("<br>")}</p></div></div>
+  <p class="aviso"><b>Na gaveta.</b> ${esc(P.gaveta)}</p>`)}
+ ${bloco("Opiniões-âncora",`<p class="muted" style="font-size:14px;margin:0">O que eu repetiria pelo resto da vida.</p>${lista(E.ancoras)}`)}
+ ${bloco("Público",`<p class="gancho" style="margin:0">${esc(E.publico.principal)}</p>
+  <div class="tres">${E.publico.grupos.map(([g,d])=>`<div><b>${esc(g)}</b><br>${esc(d)}</div>`).join("")}</div>
+  <p style="margin:0"><span class="label">Secundário</span><br>${esc(E.publico.secundario)}</p>
+  <p class="aviso">${esc(E.publico.atencao)}</p>`)}
+ ${bloco("Promessa do perfil",`<p class="gancho" style="margin:0">${esc(E.promessa)}</p>`)}
+ ${bloco("Pilares",`<div class="duas">${E.pilares.map((p,i)=>`<div class="cartao" style="background:var(--leite)"><div class="chips"><span class="chip bleu">Pilar ${i+1}</span><span class="chip">${esc(p.papel)}</span></div><b>${esc(p.nome)}</b><span style="font-size:14.5px">${esc(p.sobre)}</span></div>`).join("")}</div>`)}
+ ${bloco("Editorias",`<div class="tabwrap"><table><thead><tr><th>Editoria</th><th>Pilar</th><th>O que é</th></tr></thead><tbody>${E.editorias.map(e=>`<tr><td><b>${esc(e.nome)}</b>${e.base?` <span class="chip miel">base</span>`:""}</td><td>${esc(e.pilar)}</td><td>${esc(e.sobre)}</td></tr>`).join("")}</tbody></table></div>
+  <p class="aviso">${esc(E.ritmo)}</p>`)}
+ ${bloco("O que eu não falo",lista(E.naoFalo))}
+ ${bloco("Tom de voz",`<div class="tabwrap"><table><thead><tr><th>É</th><th>Não é</th></tr></thead><tbody>${E.tom.map(([s,n])=>`<tr><td>${esc(s)}</td><td class="muted">${esc(n)}</td></tr>`).join("")}</tbody></table></div>
+  <p style="margin:0">${esc(E.jeito)}</p>
+  <div class="chips"><span class="label" style="margin-right:6px">Palavras banidas</span>${E.banidas.map(b=>`<span class="chip terre">${esc(b)}</span>`).join("")}</div>`)}
+ ${bloco("Funil e monetização",`<div class="tres">${E.funil.map(f=>`<div><span class="label">${esc(f.etapa)}</span><br><b>${esc(f.funcao)}</b><br><span style="font-size:13.5px">${esc(f.onde)}</span></div>`).join("")}</div>
+  <ol style="margin:0;padding-left:22px;display:grid;gap:8px">${E.monetizacao.map(([t,d])=>`<li><b>${esc(t)}.</b> ${esc(d)}</li>`).join("")}</ol>
+  <p class="aviso">${esc(E.pesquisa)}</p>`)}
+ <section class="pontos"><span class="label">Post fixado da nova fase</span><p class="gancho" style="margin:0">${esc(E.fixado.titulo)}</p><p class="muted" style="font-size:14px;margin:0">${esc(E.fixado.sobre)}</p></section>
+ </div></div>`;
 }
 
 let fmt="reels";
