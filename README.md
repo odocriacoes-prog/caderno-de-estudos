@@ -8,6 +8,7 @@ Site estático (HTML, CSS e JS, sem build) publicado no Netlify, com dados no Su
 - `index.html` estrutura da página
 - `estilo.css` visual (paleta Espresso, Eau trouble, Terre cuite, Bleu porcelaine, Nuage de lait, Miel doré)
 - `conteudo.js` conteúdo das aulas, pautas e ferramentas. Aula nova entra aqui.
+- `produtor.js` Meu Perfil › Produzir carrossel (receita da Alana em 6 passos, rascunhos em `S.rascunhos`) e Temas em alta (tabela `caderno_temas`)
 - `app.js` telas, login por link no e-mail e gravação no Supabase
 - `config.js` endereço e chave pública do Supabase
 - `schema.sql` tabela `estudo_estado` com acesso só da dona
@@ -18,3 +19,5 @@ Site estático (HTML, CSS e JS, sem build) publicado no Netlify, com dados no Su
 3. No Netlify, Add new site › Import from GitHub › este repositório. Sem comando de build; pasta de publicação: raiz.
 
 O caderno abre sem login. Os dados ficam na linha `lidi` da tabela `estudo_aberto`; enquanto a tabela não existir, ficam guardados só no navegador.
+
+Os temas em alta ficam numa tabela separada, `caderno_temas` (também aberta, sem login), pra uma tarefa agendada do Claude inserir pautas quentes todo dia sem sobrescrever o estado do caderno. Colunas: data, titulo, porque, fonte_nome, fonte_url, angulo, headline, pilar, editoria, formato (carrossel/reels/qualquer), janela (hoje/semana/mes), status (novo/guardado/usado/descartado), origem (claude/manual).

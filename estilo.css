@@ -228,3 +228,39 @@ pre.prompt{white-space:pre-wrap;font-family:var(--mono);font-size:12px;line-heig
 .estrela:focus-visible{outline:2px solid var(--terre)}
 .metricas{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px}
 .card .duas{grid-template-columns:1fr auto}
+
+/* produtor de carrossel */
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.rasc{all:unset;cursor:pointer;border:1px solid var(--linha);border-radius:999px;padding:5px 12px;font-size:13.5px;font-weight:600;background:var(--papel);max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rasc.on{background:var(--bleu-tinta);color:var(--leite);border-color:var(--bleu-tinta)}
+.rasc:focus-visible{outline:2px solid var(--terre)}
+.passo{gap:12px}
+.passo-cab{display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:start}
+.passo .pn{font-family:var(--display);font-size:30px;line-height:1;color:var(--bleu-tinta);width:40px;height:40px;border-radius:12px;background:var(--bleu-fundo);display:grid;place-items:center}
+.passo.feito .pn{background:var(--ok-fundo);color:var(--ok)}
+.passo .hl{grid-template-columns:auto 1fr auto;align-items:start}
+.slides{display:flex;gap:10px;overflow-x:auto;padding:4px 2px 10px;scroll-snap-type:x mandatory}
+.slide{flex:0 0 190px;aspect-ratio:4/5;border-radius:12px;border:1px solid var(--linha);background:var(--papel);padding:14px;display:flex;flex-direction:column;justify-content:center;gap:8px;position:relative;scroll-snap-align:start;overflow:hidden}
+.slide .sn{position:absolute;top:8px;right:10px;font-family:var(--mono);font-size:10px;color:var(--suave)}
+.slide .st{font-size:13px;line-height:1.4;white-space:pre-wrap;overflow:hidden}
+.slide.capa{background:var(--espresso);border-color:var(--espresso)}
+.slide.capa .st{color:var(--leite);font-family:var(--display);font-size:21px;line-height:1.15}
+.slide.capa .sn{color:var(--miel)}
+.slide.grandona .st{font-family:var(--display);font-size:19px;line-height:1.15}
+.slide.grandona.capa .st{font-size:24px}
+.slide.nativo{background:var(--leite)}
+.slide.nativo .st{font-size:12.5px}
+.slide.dividida{justify-content:flex-start;padding:0}
+.slide.dividida .foto{height:46%;background:var(--eau-fundo);display:grid;place-items:center;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--suave)}
+.slide.dividida .st{padding:10px 12px}
+.slide.capa.dividida .foto{background:#6b3a22;color:var(--miel)}
+.slide .aviso-slide{position:absolute;bottom:8px;left:8px;font-size:9px}
+.vazio-slides{align-items:center}
+
+/* temas em alta */
+.grade.temas{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+.tema .gancho{font-size:19px}
+.tema .tema-hl{font-family:var(--display);font-size:17px;color:var(--terre);line-height:1.3}
+.tema.frio{opacity:.7}
+@media (max-width:860px){.slide{flex-basis:160px}.grade.temas{grid-template-columns:1fr}}
+.passo > *{min-width:0}

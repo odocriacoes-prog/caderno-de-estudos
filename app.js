@@ -7,7 +7,7 @@ function semente(){
   analise:[{id:"ex1",exemplo:true,titulo:"Exemplo: como fica uma ficha preenchida",formato:"reels",data:"",views:2400,likes:180,ncom:14,
    comentarios:[{id:uid(),texto:"Eu travava exatamente nisso, salvei pra mandar pra minha sócia.",tag:"Identificação"},{id:uid(),texto:"Você faz uma série sobre como montar a fotografia do ponto A?",tag:"Pedido de conteúdo"},{id:uid(),texto:"Discordo um pouco, às vezes trend é o que dá alcance.",tag:"Discordância"}],
    insights:"Gancho em primeira pessoa segurou bem. Testar a mesma estrutura em carrossel."}],
-  insights:[],pendDone:{},pendExtra:[],fontes:[],canvas:{},tab:{}};
+  insights:[],pendDone:{},pendExtra:[],fontes:[],canvas:{},tab:{},rascunhos:[],rascSel:""};
 }
 let S=null, sb=null, salvando=null;
 const CFG=window.CADERNO_CONFIG||{};
@@ -159,6 +159,7 @@ function vFerramenta(){
   c=`<div class="cartao"><span class="label">Checklist do carrossel magnético</span><p class="tese" style="font-size:19px">Precisa dar check nos 8 antes de publicar. Se um falhar, volta e arruma.</p>
    <ol class="checklista">${CHECK_CARROSSEL.map((x,i)=>`<li><span class="nn">0${i+1}</span><span>${esc(x)}</span></li>`).join("")}</ol>
    <p class="aviso">Na esteira, cada carrossel tem esse checklist e só passa para Postagem com os 8 marcados.</p></div>
+  <div class="cartao" style="margin-top:18px;background:var(--bleu-fundo);border-color:var(--bleu)"><b>Quer fazer um carrossel do começo ao fim?</b><p style="font-size:15px">O Produtor de carrossel, no Meu Perfil, guia passo a passo: pauta, headline, como você contaria, prompt com a sua estratégia, prévia dos cards e checklist.</p><div><button class="btn pri mini" data-go="produtor">Abrir o produtor</button></div></div>
   <h2 style="margin:30px 0 6px">Montador do prompt</h2>
   <p class="muted" style="margin-bottom:14px">Você escreve os quatro insumos, o prompt sai pronto para colar no Claude. Na esteira, cada carrossel tem os mesmos campos.</p>
   <div class="form cartao">${camposPrompt(P,"pr")}
@@ -245,13 +246,13 @@ function cardEsteira(c,cols){
    ${hs.map(h=>`<div class="hl ${h.id===c.headline?"on":""}"><button class="estrela" type="button" data-hesc="${c.id}|${h.id}" aria-label="Escolher esta headline" aria-pressed="${h.id===c.headline}">✱</button><span>${esc(h.texto)}</span><button class="btn mini fant" type="button" data-hdel="${c.id}|${h.id}" aria-label="Apagar versão">×</button></div>`).join("")||`<p class="muted" style="font-size:13px">Guarde aqui as tentativas. A escolhida vira a capa do card.</p>`}
    <form class="duas" style="grid-template-columns:1fr auto" data-fhead="${c.id}"><input type="text" id="h-${c.id}" placeholder="Nova versão, em uma linha" aria-label="Nova versão de headline" required><button class="btn mini" type="submit">Guardar</button></form></div>
   <div class="bloco"><span class="label">Checklist · ${nk}/8</span>${CHECK_CARROSSEL.map((x,i)=>`<label class="check" style="align-items:flex-start;font-size:13.5px"><input type="checkbox" data-ccheck="${c.id}|${i}" ${c.check&&c.check[i]?"checked":""} style="margin-top:3px"><span>${esc(x)}</span></label>`).join("")}<p class="muted" style="font-size:12.5px">Só vai para Postagem com os 8 marcados.</p></div>`:"";
- return `<div class="card"><span class="t">${esc(c.titulo)}</span>${esc_h?`<span class="capa">${esc(esc_h.texto)}</span>`:""}<div class="chips">${a?`<span class="chip">${esc(rotAula(a))}</span>`:""}${c.origem==="comentario"?`<span class="chip">De um comentário</span>`:""}${car&&c.fmtCarrossel?`<span class="chip bleu">${esc(c.fmtCarrossel)}</span>`:""}${car?`<span class="chip ${nk===8?"ok":""}">Checklist ${nk}/8</span>`:""}${c.data?`<span class="chip miel">${dataBR(c.data)}</span>`:""}</div>
+ return `<div class="card"><span class="t">${esc(c.titulo)}</span>${esc_h?`<span class="capa">${esc(esc_h.texto)}</span>`:""}<div class="chips">${a?`<span class="chip">${esc(rotAula(a))}</span>`:""}${c.origem==="comentario"?`<span class="chip">De um comentário</span>`:""}${c.origem==="produtor"?`<span class="chip">Do produtor</span>`:""}${c.origem==="tema"?`<span class="chip">Tema em alta</span>`:""}${car&&c.fmtCarrossel?`<span class="chip bleu">${esc(c.fmtCarrossel)}</span>`:""}${car?`<span class="chip ${nk===8?"ok":""}">Checklist ${nk}/8</span>`:""}${c.data?`<span class="chip miel">${dataBR(c.data)}</span>`:""}</div>
  <details class="mais" data-det="${c.id}" ${abertos.has(c.id)?"open":""}><summary>Detalhes</summary><div class="form">
   ${p?`<p style="font-size:13.5px" class="muted">${esc(p.angulo)}</p>`:""}
   <div class="campo"><label for="d-${c.id}">Data prevista</label><input type="date" id="d-${c.id}" data-cdata="${c.id}" value="${esc(c.data)}"></div>
   ${blocoCarrossel}
   <div class="campo"><label for="n-${c.id}">${car?"Texto dos cards, legenda ou notas":"Texto, roteiro ou notas"}</label><textarea id="n-${c.id}" data-cnotas="${c.id}">${esc(c.notas||(p?p.esboco.map((e,i)=>(i+1)+". "+e).join("\n"):""))}</textarea></div>
-  <div class="linha-btns"><a class="btn mini" href="${gcal(c.titulo,c.data,"Conteúdo do perfil: "+c.titulo)}" target="_blank" rel="noopener">Agenda</a>${a?`<button class="btn mini fant" type="button" data-aula="${a.id}">Ver aula</button>`:""}<button class="btn mini fant" type="button" data-delcard="${c.id}">Excluir</button></div></div></details>
+  <div class="linha-btns"><a class="btn mini" href="${gcal(c.titulo,c.data,"Conteúdo do perfil: "+c.titulo)}" target="_blank" rel="noopener">Agenda</a>${c.rascunho&&S.rascunhos.some(r=>r.id===c.rascunho)?`<button class="btn mini" type="button" data-abrirrasc="${c.rascunho}">Abrir no produtor</button>`:""}${a?`<button class="btn mini fant" type="button" data-aula="${a.id}">Ver aula</button>`:""}<button class="btn mini fant" type="button" data-delcard="${c.id}">Excluir</button></div></div></details>
  <div class="mover"><button class="btn mini fant" data-mv="${c.id}" data-d="-1" ${c.etapa===0?"disabled":""} aria-label="Voltar etapa">‹ Voltar</button><button class="btn mini" data-mv="${c.id}" data-d="1" ${c.etapa===cols.length-1?"disabled":""} aria-label="Avançar etapa">Avançar ›</button></div></div>`;
 }
 
@@ -304,7 +305,7 @@ function fichaHTML(f){
 /* ---------------- render ---------------- */
 function render(){
  if(!S) return;
- const v={painel:vPainel,biblioteca:vBiblioteca,aula:vAula,ferramentas:vFerramentas,ferramenta:vFerramenta,pendencias:vPendencias,estrategia:vEstrategia,esteira:vEsteira,analise:vAnalise}[R.view]||vPainel;
+ const v={painel:vPainel,biblioteca:vBiblioteca,aula:vAula,ferramentas:vFerramentas,ferramenta:vFerramenta,pendencias:vPendencias,estrategia:vEstrategia,esteira:vEsteira,analise:vAnalise,produtor:vProdutor,temas:vTemas}[R.view]||vPainel;
  document.getElementById("main").innerHTML=v();
  const atual=R.view==="aula"?"biblioteca":R.view==="ferramenta"?"ferramentas":R.view;
  document.querySelectorAll(".nav button").forEach(b=>b.setAttribute("aria-current",String(b.dataset.go===atual)));
@@ -334,6 +335,7 @@ document.addEventListener("click",e=>{
  if(d.mv){const c=S.esteira.find(x=>x.id===d.mv);const max=ETAPAS[c.formato].length-1;const nova=Math.min(max,Math.max(0,c.etapa+Number(d.d)));
   if(c.formato==="carrossel"&&c.etapa<ETAPA_POSTAGEM&&nova>=ETAPA_POSTAGEM&&nCheck(c)<8){const f=8-nCheck(c);abertos.add(c.id);render();toast((f===1?"Falta 1 item":"Faltam "+f+" itens")+" do checklist. Se um falhar, volta e arruma.");return}
   c.etapa=nova;if(c.etapa===max)garantirFicha(c);salvar();render();return}
+ if(d.abrirrasc){S.rascSel=d.abrirrasc;salvar();ir("produtor");return}
  if(d.delcard){S.esteira=S.esteira.filter(x=>x.id!==d.delcard);salvar();toast("Removido da esteira");render();return}
  if(d.delinsight){S.insights=S.insights.filter(x=>x.id!==d.delinsight);salvar();render();return}
  if(d.insightpauta){const i=S.insights.find(x=>x.id===d.insightpauta);paraEsteira({titulo:i.texto.slice(0,140),formato:"reels",pilar:"",aula:i.aula});toast("Virou ideia na esteira");render();return}
@@ -395,13 +397,15 @@ function salvar(){
   if(error) toast("Não consegui salvar na nuvem. Ficou guardado neste aparelho.");
  },700);
 }
+function normalizar(){if(!S.tab)S.tab={};if(!S.rascunhos)S.rascunhos=[];if(S.rascSel==null)S.rascSel=""}
 function tela(html){document.body.classList.add("deslogado");document.getElementById("main").innerHTML=`<div class="entrada">${html}</div>`}
 function abrir(dados){
  S=(dados&&dados.esteira)?dados:(lerLocal()||semente());
- if(!S.tab)S.tab={};
+ normalizar();
  document.body.classList.remove("deslogado");
  document.getElementById("quem").textContent=modoLocal?"Salvando só neste aparelho":"Salvo na nuvem";
  lerHash();render();
+ carregarTemas().then(()=>{if(R.view==="temas")render()});
 }
 async function carregar(){
  tela(`<p class="muted">Abrindo o seu caderno…</p>`);
@@ -415,7 +419,8 @@ async function carregar(){
 async function recarregar(){
  if(modoLocal||!sb||salvando) return;
  const {data}=await sb.from("estudo_aberto").select("dados").eq("id",LINHA).maybeSingle();
- if(data&&data.dados&&data.dados.esteira&&!salvando){S=data.dados;if(!S.tab)S.tab={};gravarLocal();render()}
+ if(data&&data.dados&&data.dados.esteira&&!salvando){S=data.dados;normalizar();gravarLocal();render()}
+ carregarTemas().then(()=>{if(R.view==="temas")render()});
 }
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")recarregar()});
 function iniciar(){
